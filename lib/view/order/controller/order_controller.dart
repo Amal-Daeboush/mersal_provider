@@ -6,6 +6,7 @@ import 'package:provider_mersal/core/class/crud.dart';
 import 'package:provider_mersal/core/class/status_request.dart';
 import 'package:provider_mersal/core/constant/api_links.dart';
 import 'package:provider_mersal/core/constant/const_data.dart';
+import 'package:provider_mersal/model/api%20remote/api_remote.dart';
 import 'package:provider_mersal/model/other_user_model.dart';
 import 'package:provider_mersal/model/reservation_model.dart';
 
@@ -13,6 +14,7 @@ import '../../../model/order_model.dart';
 
 class OrderController extends GetxController {
   List<OrderModel> acceptOrders = [];
+  List<OrderModel> onWayOrders = [];
   List<OrderModel> cancelOrders = [];
   List<OrderModel> waitOrders = [];
   List<OrderModel> orders = [];
@@ -28,6 +30,43 @@ class OrderController extends GetxController {
   void onInit() {
     super.onInit();
     getOrderProduct();
+  }
+
+  Future<void> updatestatusReservation(String id, bool cancel) async {
+    statusRequest = StatusRequest.loading;
+    update();
+
+    var response = await ApiRemote().changeStatusOrdersServicesModel({
+      'status': cancel ? 'cancelled' : 'complete',
+    }, id);
+
+    if (response is StatusRequest) {
+      // فشل الاتصال
+      message =
+          response == StatusRequest.offlineFailure
+              ? 'تحقق من الاتصال بالإنترنت'
+              : 'حدث خطأ في السيرفر';
+      Get.snackbar('خطأ', message);
+      return;
+    }
+
+    if (response is Map<String, dynamic>) {
+      if (response.containsKey('reservation')) {
+        Get.snackbar('نجاح', 'تم تعديل حالة الحجز إلى مكتملة');
+        getOrderProduct();
+      } else if (response.containsKey('error')) {
+        // معالجة الأخطاء
+        Get.snackbar('خطأ', response['error']);
+      } else if (response.containsKey('message')) {
+        // في حالة وجود رسالة
+        Get.snackbar('رسالة', response['message']);
+      } else {
+        // استجابة غير متوقعة
+        Get.snackbar('خطأ', 'استجابة غير مفهومة من السيرفر');
+      }
+    } else {
+      Get.snackbar('خطأ', 'استجابة غير متوقعة من السيرفر');
+    }
   }
 
   Future<void> getOrderProduct() async {
@@ -69,7 +108,7 @@ class OrderController extends GetxController {
                 final otherUser = await fetchOtherUser(userId);
 
                 if (otherUser != null) {
-                  order.userInfo = otherUser; // ✅ اربط المستخدم بالطلب
+                  order.userInfo = otherUser;
                 }
               }
 
@@ -86,6 +125,10 @@ class OrderController extends GetxController {
               acceptOrders =
                   orders
                       .where((item) => item.orderDetails.status == 'complete')
+                      .toList();
+              onWayOrders =
+                  orders
+                      .where((item) => item.orderDetails.status == 'on_way')
                       .toList();
 
               statusRequest = StatusRequest.success;
@@ -109,6 +152,14 @@ class OrderController extends GetxController {
                         (item) => ReservationModel.fromJson(item),
                       )
                       .toList();
+              for (var order in reservcation) {
+                final userId = order.userId;
+                final otherUser = await fetchOtherUser(userId);
+
+                if (otherUser != null) {
+                  order.userInfo = otherUser;
+                }
+              }
 
               waitReservation =
                   reservcation
@@ -151,35 +202,34 @@ class OrderController extends GetxController {
   }
 
   Future<OtherUserInfo?> fetchOtherUser(int userId) async {
-  final url = '${ApiLinks.getUser}/$userId';
+    final url = '${ApiLinks.getUser}/$userId';
 
-  try {
-    final response = await http.get(
-      Uri.parse(url),
-  headers: ApiLinks().getHeaderWithToken(),
-    );
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: ApiLinks().getHeaderWithToken(),
+      );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final jsonData = json.decode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonData = json.decode(response.body);
 
-      final userInfoData = jsonData['user_info'];
+        final userInfoData = jsonData['user_info'];
 
-      if (userInfoData != null) {
-        return OtherUserInfo.fromJson(userInfoData);
+        if (userInfoData != null) {
+          return OtherUserInfo.fromJson(userInfoData);
+        } else {
+          print('user_info not found in response');
+          return null;
+        }
       } else {
-        print('user_info not found in response');
+        print('Failed to load user: ${response.statusCode}');
         return null;
       }
-    } else {
-      print('Failed to load user: ${response.statusCode}');
+    } catch (e) {
+      print('Error: $e');
       return null;
     }
-  } catch (e) {
-    print('Error: $e');
-    return null;
   }
-}
-
 
   /*  Future<void> getOrderServices() async {
     statusRequest = StatusRequest.loading;

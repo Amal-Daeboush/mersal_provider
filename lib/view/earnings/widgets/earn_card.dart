@@ -7,8 +7,9 @@ import '../../../../core/constant/app_colors.dart';
 import '../../../../core/constant/styles.dart';
 
 class EarnCard extends StatelessWidget {
+  final String? number;
   final String title;
-  const EarnCard({super.key, required this.title});
+  const EarnCard({super.key, required this.title, this.number});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class EarnCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    '1000',
+                  number??  '1000',
                     textAlign: TextAlign.left,
                     style: Styles.style4.copyWith(
                         fontWeight: FontWeight.w600,

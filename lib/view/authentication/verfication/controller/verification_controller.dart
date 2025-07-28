@@ -1,17 +1,22 @@
 import 'package:get/get.dart';
 import 'package:provider_mersal/core/class/status_request.dart';
+import 'package:provider_mersal/core/constant/api_links.dart';
+import 'package:provider_mersal/core/sevices/key_shsred_perfences.dart';
+import 'package:provider_mersal/core/sevices/sevices.dart';
 import 'package:provider_mersal/model/api%20remote/api_remote.dart';
+import 'package:provider_mersal/view/address/screen/address.dart';
 import 'package:provider_mersal/view/authentication/login/screen/login.dart';
-import 'package:provider_mersal/view/botttom%20nav%20bar/view/bottom_nav_bar_screen.dart';
+
 
 class VerificationController extends GetxController {
   // static VerificationController instance = Get.find();
   late String phoneNumber;
   String? verificationCode;
-  final String provider;
-  StatusRequest statusRequest = StatusRequest.loading;
+  final String email;
+  StatusRequest statusRequest = StatusRequest.none;
 
-  VerificationController({required this.provider});
+  VerificationController({required this.email});
+
   // RxInt counter = 60.obs;
   // Timer? timer;
   // waiting() {
@@ -28,7 +33,11 @@ class VerificationController extends GetxController {
     statusRequest = StatusRequest.loading;
     update();
 
-    var response = await ApiRemote().signUpModel({'otp': verificationCode});
+    var response = await ApiRemote().verificationModel(
+      {'otp': verificationCode},
+      ApiLinks.verify_otp,
+      true,
+    );
 
     print("Response: $response");
 
@@ -36,8 +45,9 @@ class VerificationController extends GetxController {
       Get.snackbar('نجاح', ' تم التحقق من الحساب ..');
 
       statusRequest = StatusRequest.success;
-
-      Get.off(LoginScreen(provider: provider));
+      await MyServices.saveValue(SharedPreferencesKey.otp, '1');
+      await MyServices().setConstOtp();
+      Get.off(AddressScreen(isfromHome: false));
       //   Get.off(LoginScreen(provider: provider));
     } else if (response is String) {
       // ✅ عرض رسالة الخطأ بشكل مناسب
@@ -53,18 +63,78 @@ class VerificationController extends GetxController {
     update();
   }
 
-  void checkVerificationCode() {
-    if (verificationCode == '123456') {
-      Get.off(LoginScreen(provider: 'product_provider'));
+  ResetPassEmail() async {
+    statusRequest = StatusRequest.loading;
+    update();
+
+    var response = await ApiRemote().verificationModel(
+      {'otp': verificationCode, 'email': email},
+      ApiLinks.reset_pass,
+      false,
+    );
+
+    print("Response: $response");
+
+    if (response == StatusRequest.success) {
+      Get.snackbar('نجاح', ' تم ارسال كلمة السر الجديدة الى الايميل..');
+
+      statusRequest = StatusRequest.success;
+
+      Get.off(LoginScreen());
+      //   Get.off(LoginScreen(provider: provider));
+    } else if (response is String) {
+      // ✅ عرض رسالة الخطأ بشكل مناسب
+      Get.snackbar('Error', response);
+
+      statusRequest = StatusRequest.failure;
     } else {
-      Get.snackbar("Alert", "Please enter valid number");
+      Get.snackbar('خطأ', 'حدث خطأ');
+
+      statusRequest = StatusRequest.failure;
     }
+
+    update();
   }
+
+  ResendVerificationEmail() async {
+    statusRequest = StatusRequest.loading;
+    update();
+
+    var response = await ApiRemote().verificationModel(
+      {},
+      ApiLinks.resend_otp,
+      true,
+    );
+
+    print("Response: $response");
+
+    if (response == StatusRequest.success) {
+      Get.snackbar('نجاح', ' تم اعادة ارسال الكود الى الايميل   ..');
+
+      statusRequest = StatusRequest.success;
+
+      // Get.off(AddressScreen(isfromHome: false));
+      //   Get.off(LoginScreen(provider: provider));
+    } else if (response is String) {
+      // ✅ عرض رسالة الخطأ بشكل مناسب
+      Get.snackbar('Error', response);
+
+      statusRequest = StatusRequest.failure;
+    } else {
+      Get.snackbar('خطأ', 'حدث خطأ');
+
+      statusRequest = StatusRequest.failure;
+    }
+
+    update();
+  }
+
+  
 
   @override
   void onInit() {
     // waiting();
-    phoneNumber = '0991615304';
+  //  phoneNumber = '0991615304';
     // TODO: implement onInit
     super.onInit();
   }

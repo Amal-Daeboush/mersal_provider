@@ -1,9 +1,7 @@
-
-
 import 'package:provider_mersal/model/user_model.dart';
 
 class ConstData {
-//const data
+  //const data
 
   static String token = '';
 
@@ -12,12 +10,15 @@ class ConstData {
   static String isBoarding = '';
 
   static const String map_key = '';
-  static  String userid = '';
+  static String userid = '';
 
   static late bool islight;
-  static  String image = '';
- static  UserModel? user;
-  static  String nameUser = '';
-  static  String emailUser = '';
-    static  bool producter = false;
+  static String image = '';
+  static UserModel? user;
+  static String nameUser = '';
+  static String otp = '';
+
+  static String national = '';
+  static String emailUser = '';
+  static bool producter = false;
 }

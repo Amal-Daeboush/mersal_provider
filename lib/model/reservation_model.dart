@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:provider_mersal/model/other_user_model.dart';
+
 ReservationModel reservationModelFromJson(String str) => ReservationModel.fromJson(json.decode(str));
 
 String reservationModelToJson(ReservationModel data) => json.encode(data.toJson());
@@ -27,6 +29,7 @@ class ReservationModel {
     final int laravelThroughKey;
     final Product product;
     final User user;
+    OtherUserInfo? userInfo;
 
     ReservationModel({
         required this.id,
@@ -47,6 +50,7 @@ class ReservationModel {
         required this.laravelThroughKey,
         required this.product,
         required this.user,
+          this.userInfo, 
     });
 
     factory ReservationModel.fromJson(Map<String, dynamic> json) => ReservationModel(
@@ -68,6 +72,8 @@ class ReservationModel {
         laravelThroughKey: json["laravel_through_key"],
         product: Product.fromJson(json["product"]),
         user: User.fromJson(json["user"]),
+          userInfo: null, 
+        
     );
 
     Map<String, dynamic> toJson() => {

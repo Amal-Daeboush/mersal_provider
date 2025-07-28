@@ -154,7 +154,6 @@ import 'package:provider_mersal/core/class/status_request.dart';
 import 'package:provider_mersal/core/constant/app_image_asset.dart';
 import 'package:provider_mersal/view/address/widget/address_text_field.dart';
 import 'package:provider_mersal/view/authentication/widget/custom_container_button/custom_container_button.dart';
-import 'package:provider_mersal/view/widgets/custom_loading.dart';
 import '../../../core/constant/app_colors.dart';
 import '../../../core/constant/styles.dart';
 import '../../widgets/loading/custom_loading.dart';

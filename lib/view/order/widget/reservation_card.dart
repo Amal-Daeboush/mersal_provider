@@ -1,21 +1,20 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_mersal/core/class/helper_functions.dart';
-import 'package:provider_mersal/core/constant/const_data.dart';
 import 'package:provider_mersal/core/constant/styles.dart';
-import 'package:provider_mersal/model/order_model.dart';
 import 'package:provider_mersal/model/reservation_model.dart';
 import 'package:provider_mersal/view/chat%20screen/view/your_chat_screen.dart';
+import 'package:provider_mersal/view/order/controller/order_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/constant/app_colors.dart';
 
 class ReservationCard extends StatelessWidget {
   final ReservationModel order;
-  const ReservationCard({super.key, required this.order});
+  final OrderController? orderController;
+  const ReservationCard({super.key, required this.order, this.orderController});
 
   @override
   Widget build(BuildContext context) {
@@ -113,14 +112,16 @@ class ReservationCard extends StatelessWidget {
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           splashColor: Colors.transparent,
-                           onTap: () async {
-                final Uri phoneUri = Uri.parse('tel:${order.user.phone}');
-                if (await canLaunchUrl(phoneUri)) {
-                  await launchUrl(phoneUri);
-                } else {
-                  Get.snackbar('خطأ', 'تعذر فتح تطبيق الاتصال');
-                }
-              },
+                          onTap: () async {
+                            final Uri phoneUri = Uri.parse(
+                              'tel:${order.user.phone}',
+                            );
+                            if (await canLaunchUrl(phoneUri)) {
+                              await launchUrl(phoneUri);
+                            } else {
+                              Get.snackbar('خطأ', 'تعذر فتح تطبيق الاتصال');
+                            }
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -207,34 +208,50 @@ class ReservationCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           order.status == "pending"
-                              ? Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                  color: AppColors.primaryColor,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Text(
-                                    'قبول الطلب',
-                                    style: Styles.style5.copyWith(
-                                      color: AppColors.whiteColor,
+                              ? GestureDetector(
+                                onTap:
+                                    () => orderController!
+                                        .updatestatusReservation(
+                                          order.id.toString(),
+                                          false,
+                                        ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7),
+                                    color: AppColors.primaryColor,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Text(
+                                      ' تم اكمال الخدمة',
+                                      style: Styles.style5.copyWith(
+                                        color: AppColors.whiteColor,
+                                      ),
                                     ),
                                   ),
                                 ),
                               )
                               : const SizedBox(),
                           SizedBox(width: 5.w),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              color: AppColors.red,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text(
-                                'رفض الطلب',
-                                style: Styles.style5.copyWith(
-                                  color: AppColors.whiteColor,
+                          GestureDetector(
+                            onTap:
+                                () => orderController!.updatestatusReservation(
+                                  order.id.toString(),
+                                  true,
+                                ),
+
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: AppColors.red,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Text(
+                                  'رفض الطلب',
+                                  style: Styles.style5.copyWith(
+                                    color: AppColors.whiteColor,
+                                  ),
                                 ),
                               ),
                             ),

@@ -8,8 +8,6 @@ import 'package:provider_mersal/view/authentication/file%20loading/widgets/custo
     show CustomLoadingRow;
 import 'package:provider_mersal/view/authentication/login/screen/login.dart';
 import 'package:provider_mersal/view/authentication/register/controller/register_controller.dart';
-import 'package:provider_mersal/view/authentication/register/view/product_registeer_sereen.dart';
-import 'package:provider_mersal/view/authentication/register/view/service_register_screen.dart';
 import 'package:provider_mersal/view/authentication/widget/food_types_dialog.dart';
 import 'package:provider_mersal/view/authentication/widget/logo/custom_logo.dart';
 import 'package:provider_mersal/view/widgets/custom_loading.dart';
@@ -282,7 +280,6 @@ class RegisterScreen extends StatelessWidget {
                                                   ..onTap = () {
                                                     Get.off(
                                                       LoginScreen(
-                                                        provider: proveder,
                                                       ),
                                                     ); // الانتقال إلى شاشة التسجيل
                                                   },

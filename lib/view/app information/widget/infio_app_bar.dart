@@ -15,21 +15,38 @@ class InfioAppBar extends StatelessWidget {
       isSearch: false,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
                 onPressed: () {},
-                icon: Icon(Iconsax.login, color: AppColors.whiteColor,size: 20,)),
-            Text(
-              'عن التطبيق',
-              style: Styles.style6.copyWith(color: AppColors.whiteColor,fontWeight: FontWeight.w500),
-            ),
-            IconButton(
-                onPressed: () {Get.back();},
-                icon:
-                    Icon(Icons.arrow_forward_ios, color: AppColors.whiteColor,size: 20,)),
-          ],
+                icon: Icon(
+                  Iconsax.login,
+                  color: AppColors.whiteColor,
+                  size: 20,
+                ),
+              ),
+              Text(
+                'عن التطبيق',
+                style: Styles.style6.copyWith(
+                  color: AppColors.whiteColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.whiteColor,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

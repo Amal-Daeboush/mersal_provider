@@ -19,7 +19,7 @@ import '../../../../core/constant/app_image_asset.dart';
 import '../../../details screen/view/details_screen.dart';
 import '../../../earnings/view/earning_screen.dart';
 import '../../../widgets/field search/custom_field_search.dart';
-import '../../widgets/card/order_card.dart';
+
 import '../../widgets/discount/discount_card.dart';
 import '../../widgets/title row/add_product_row.dart';
 import '../../widgets/title row/recent_orders_row.dart';
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
             style: Styles.style1.copyWith(color: AppColors.greyColor3),
           ),
           subtitle: Text(
-            ConstData.user!.user.name??'',
+            ConstData.nameUser,
             style: Styles.style6.copyWith(color: AppColors.black2),
           ),
           trailing: Image.asset(
@@ -66,8 +66,17 @@ class HomeScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 15.h),
                   InkWell(
-                    onTap: () => Get.to(const EarningScreen()),
+                    onTap:
+                        () => Get.to(
+                          EarningScreen(
+                            commiessionModel: controller.commiessionModel,
+                            totalPending: controller.totalPending,
+                            totalCompleted: controller.totalCompleted,
+                          ),
+                        ),
                     child: CardRow(
+                      commision:
+                          controller.commiessionModel?.totalSales.toString()??'0',
                       ordersCounts: controller.orders.length.toString(),
                     ),
                   ),
@@ -77,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                   AddRow(
                     add: () => Get.to(const AddProductScreen()),
                     isSrervice: false,
-                    isfood:isfood
+                    isfood: isfood,
                   ),
                   SizedBox(height: 15.h),
                   controller.statusRequest == StatusRequest.loading

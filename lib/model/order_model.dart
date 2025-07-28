@@ -42,9 +42,10 @@ class OrderDetails {
     final int id;
     final int userId;
     final String status;
+      final String delivery_fee;
     final DateTime createdAt;
 
-    OrderDetails({
+    OrderDetails({required this.delivery_fee, 
         required this.id,
         required this.userId,
         required this.status,
@@ -53,6 +54,7 @@ class OrderDetails {
 
     factory OrderDetails.fromJson(Map<String, dynamic> json) => OrderDetails(
         id: json["id"],
+        delivery_fee:json["delivery_fee"],
         userId: json["user_id"],
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -61,6 +63,7 @@ class OrderDetails {
     Map<String, dynamic> toJson() => {
         "id": id,
         "user_id": userId,
+        "delivery_fee":delivery_fee,
         "status": status,
         "created_at": createdAt.toIso8601String(),
     };

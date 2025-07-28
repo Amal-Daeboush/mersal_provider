@@ -15,28 +15,31 @@ class MyServices extends GetxService {
     shared = await SharedPreferences.getInstance();
 
     ConstData.token = await getValue(SharedPreferencesKey.tokenkey) ?? '';
+    ConstData.otp = await getValue(SharedPreferencesKey.otp) ?? '';
     ConstData.producter =
-        await getValueBool(SharedPreferencesKey.producter)??false ;
-   ///  ConstData.userid = await getValue(SharedPreferencesKey.userId) ?? '';
+        await getValueBool(SharedPreferencesKey.producter) ?? false;
+
+    ///  ConstData.userid = await getValue(SharedPreferencesKey.userId) ?? '';
     ConstData.nameUser = await getValue(SharedPreferencesKey.userName) ?? '';
+    ConstData.national = await getValue(SharedPreferencesKey.national) ?? '';
     ConstData.emailUser = await getValue(SharedPreferencesKey.userEmail) ?? '';
     ConstData.image = await getValue(SharedPreferencesKey.image) ?? '';
     ConstData.isBoarding =
         await getValue(SharedPreferencesKey.isBoarding) ?? '';
-     UserModel? userInfo = await getUserInfo();
-     
+    UserModel? userInfo = await getUserInfo();
+
     if (userInfo != null) {
       ConstData.user = userInfo;
     } else {
       print('User info is null, handle accordingly');
-    } 
+    }
     return this;
   }
 
   static Future<void> saveValue(String key, String value) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(key, value);
+      //  final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await shared.setString(key, value);
     } catch (e) {
       print("Error saving value: $e");
     }
@@ -44,8 +47,8 @@ class MyServices extends GetxService {
 
   static Future<void> saveValueBool(String key, bool value) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(key, value);
+      // final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await shared.setBool(key, value);
     } catch (e) {
       print("Error saving value: $e");
     }
@@ -53,8 +56,8 @@ class MyServices extends GetxService {
 
   static getValue(String key) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      return prefs.getString(key);
+      //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+      return shared.getString(key);
     } catch (e) {
       print("Error getting value: $e");
       return null;
@@ -63,8 +66,8 @@ class MyServices extends GetxService {
 
   static getValueBool(String key) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      return prefs.getBool(key);
+      //    final SharedPreferences prefs = await SharedPreferences.getInstance();
+      return shared.getBool(key);
     } catch (e) {
       print("Error getting value: $e");
       return null;
@@ -78,8 +81,15 @@ class MyServices extends GetxService {
     return ConstData.token;
   }
 
+  setConstNotationId() async {
+    ConstData.national = await getValue(SharedPreferencesKey.national) ?? '';
+    print('your national is ......');
+    print(ConstData.national);
+    return ConstData.national;
+  }
+
   setConstProductVendor() async {
-    ConstData.producter = await getValueBool(SharedPreferencesKey.producter) ;
+    ConstData.producter = await getValueBool(SharedPreferencesKey.producter);
     print('your product is ......');
     print(ConstData.producter);
     return ConstData.producter;
@@ -113,12 +123,12 @@ class MyServices extends GetxService {
     return ConstData.nameUser;
   }
 
-   setConstuser() async {
+  setConstuser() async {
     ConstData.user = (await getUserInfo())!;
     print('your user is ......');
     print(ConstData.user);
     return ConstData.user;
-  } 
+  }
 
   setConstBoarding() async {
     ConstData.isBoarding =
@@ -128,31 +138,38 @@ class MyServices extends GetxService {
     return ConstData.isBoarding;
   }
 
-    Future<UserModel?> getUserInfo() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userJson = prefs.getString(SharedPreferencesKey.user);
+  setConstOtp() async {
+    ConstData.otp = await getValue(SharedPreferencesKey.otp) ?? '';
+    print('your otp is ......');
+    print(ConstData.otp);
+    return ConstData.otp;
+  }
+
+  Future<UserModel?> getUserInfo() async {
+    //  final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userJson = shared.getString(SharedPreferencesKey.user);
 
     if (userJson != null && userJson.isNotEmpty) {
       return UserModel.fromJson(jsonDecode(userJson));
     }
 
     return null;
-  } 
+  }
 
   //save User Information
-   Future<void> saveUserInfo(UserModel user) async {
+  Future<void> saveUserInfo(UserModel user) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      //    final SharedPreferences prefs = await SharedPreferences.getInstance();
       String userJson = jsonEncode(user.toJson());
 
-      await prefs.setString(SharedPreferencesKey.user, userJson);
-    
+      await shared.setString(SharedPreferencesKey.user, userJson);
+
       print(' user is ......');
       print(user);
     } catch (e) {
       print("Error saving user info: $e");
     }
-  } 
+  }
 
   // clear shared
   Future<void> clear() async {

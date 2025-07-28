@@ -8,18 +8,17 @@ import 'package:provider_mersal/view/authentication/widget/text_field/custom_tex
 import '../../../../core/constant/app_colors.dart';
 import '../../../../core/constant/app_sizes.dart';
 import '../../../../core/constant/styles.dart';
-import '../controller/login_phone_controller.dart';
+import '../cotroller/forget_pass_controller.dart';
 
-class LoginPhoneScreen extends StatelessWidget {
-    final String provider;
-  const LoginPhoneScreen({super.key, required this.provider});
+class ForgetPassScreen extends StatelessWidget {
+  const ForgetPassScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: GetBuilder(
-          init: LoginPhoneController(provider: provider),
+          init: ForgetPassController(),
           builder: (controller) {
             return Form(
               key: controller.keyFormphone,
@@ -38,7 +37,8 @@ class LoginPhoneScreen extends StatelessWidget {
                       Text('ابدأ مع مرسال ', style: Styles.style3),
                       SizedBox(height: 5.h),
                       Text(
-                        'ادخل الايميل الخاص بك',
+                        textAlign: TextAlign.center,
+                        'ادخل الايميل الخاص بك من اجل استعادة كلمة المرور',
                         style: Styles.style1.copyWith(
                           color: AppColors.lightGrey,
                         ),
@@ -58,7 +58,7 @@ class LoginPhoneScreen extends StatelessWidget {
                             /* onChanged: (value) {
                               controller.checkNumberValidate(value);
                             }, */
-                         //   keyboardType: TextInputType.number,
+                            //   keyboardType: TextInputType.number,
                             controller: controller.emailController,
                             prefixIcon: const Icon(
                               Icons.email,
@@ -78,7 +78,7 @@ class LoginPhoneScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 10.h),
                       CustomContainerButton(
-                        onTap: controller.loginWithPhone,
+                        onTap: controller.ForgetPass,
                         borderColor: AppColors.primaryColor,
                         color: AppColors.primaryColor,
                         child: Text(

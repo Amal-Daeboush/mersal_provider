@@ -73,7 +73,7 @@ class AuthenticationScreen extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomButtonLogin(
-                          onTap: () => Get.off( LoginScreen(provider: controller.selectedValue ,)),
+                          onTap: () => Get.off( LoginScreen()),
                           isLogin: true,
                           textn: false),
                     ],

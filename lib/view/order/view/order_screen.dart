@@ -5,7 +5,6 @@ import 'package:provider_mersal/core/class/status_request.dart';
 import 'package:provider_mersal/core/constant/const_data.dart';
 import 'package:provider_mersal/model/order_model.dart';
 import 'package:provider_mersal/model/reservation_model.dart';
-import 'package:provider_mersal/view/home/widgets/card/order_card.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:provider_mersal/view/order/widget/order_shimmer.dart';
 import 'package:provider_mersal/view/order/widget/reservation_card.dart';
@@ -38,7 +37,10 @@ class OrderScreen extends StatelessWidget {
                       height: HelperFunctions.screenHeight() / 6,
                       color: AppColors.primaryColor,
                       child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 15,
+                        ),
                         child: MyOrdersAppBar(),
                       ),
                     ),
@@ -92,43 +94,70 @@ class OrderScreen extends StatelessWidget {
                                   ),
                                   indicatorColor: AppColors.primaryColor,
                                 ),
-                                tabs: const [
+                                tabs: [
                                   Text('جميع الطلبات'),
                                   //   Text('النشطه'),
                                   //  Text('المكتمله'),
                                   Text('الملغاه'),
                                   Text('المقبولة'),
+                                  if (ConstData.producter) Text('قيد التوصيل'),
                                   Text('المنتظره'),
                                 ],
                                 views:
                                     ConstData.producter
                                         ? [
                                           // مقدم خدمة: عرض الطلبات
-                                          buildOrderList(controller.orders,controller.statusRequest==StatusRequest.loading),
                                           buildOrderList(
-                                            controller.cancelOrders,controller.statusRequest==StatusRequest.loading
+                                            controller.orders,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
                                           ),
                                           buildOrderList(
-                                            controller.acceptOrders,controller.statusRequest==StatusRequest.loading
+                                            controller.cancelOrders,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
                                           ),
-                                          buildOrderList(controller.waitOrders,controller.statusRequest==StatusRequest.loading)
+                                          buildOrderList(
+                                            controller.acceptOrders,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                          ),
+                                          buildOrderList(
+                                            controller.onWayOrders,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                          ),
+                                          buildOrderList(
+                                            controller.waitOrders,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                          ),
                                         ]
                                         : [
                                           // مستخدم: عرض الحجوزات
                                           buildReservationList(
-                                            
                                             controller.reservcation,
-                                            controller.statusRequest==StatusRequest.loading
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                            controller,
                                           ),
                                           buildReservationList(
                                             controller.cancelReservation,
-                                            controller.statusRequest==StatusRequest.loading
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                            controller,
                                           ),
                                           buildReservationList(
-                                            controller.acceptReservation,controller.statusRequest==StatusRequest.loading
+                                            controller.acceptReservation,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                            controller,
                                           ),
                                           buildReservationList(
-                                            controller.waitReservation,controller.statusRequest==StatusRequest.loading
+                                            controller.waitReservation,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                            controller,
                                           ),
                                         ],
                               ),
@@ -147,13 +176,13 @@ class OrderScreen extends StatelessWidget {
     );
   }
 
-  Widget buildOrderList(List<OrderModel> orders,bool isloading) {
-     if (isloading) {
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) => const ReservationCardShimmer(),
-    );
-  }
+  Widget buildOrderList(List<OrderModel> orders, bool isloading) {
+    if (isloading) {
+      return ListView.builder(
+        itemCount: 5,
+        itemBuilder: (context, index) => const ReservationCardShimmer(),
+      );
+    }
     return orders.isNotEmpty
         ? ListView(
           children: [
@@ -169,13 +198,17 @@ class OrderScreen extends StatelessWidget {
         : Center(child: Text('لا يوجد طلبات'));
   }
 
-  Widget buildReservationList(List<ReservationModel> reservations,bool isloading) {
-     if (isloading) {
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) => const ReservationCardShimmer(),
-    );
-  }
+  Widget buildReservationList(
+    List<ReservationModel> reservations,
+    bool isloading,
+    OrderController controller,
+  ) {
+    if (isloading) {
+      return ListView.builder(
+        itemCount: 5,
+        itemBuilder: (context, index) => const ReservationCardShimmer(),
+      );
+    }
 
     return reservations.isNotEmpty
         ? ListView(
@@ -185,8 +218,10 @@ class OrderScreen extends StatelessWidget {
               shrinkWrap: true,
               itemCount: reservations.length,
               itemBuilder:
-                  (context, index) =>
-                      ReservationCard(order: reservations[index]),
+                  (context, index) => ReservationCard(
+                    order: reservations[index],
+                    orderController: controller,
+                  ),
             ),
             const SizedBox(height: 20),
           ],

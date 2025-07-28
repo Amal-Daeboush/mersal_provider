@@ -12,6 +12,7 @@ import 'package:provider_mersal/view/discount/view/edit_discount_dialog.dart';
 import 'package:provider_mersal/view/product/edit%20product/controller/edit_product_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider_mersal/view/product/widgets/category_drop_down.dart';
+import 'package:provider_mersal/view/product/widgets/category_food_types.dart';
 import 'package:provider_mersal/view/product/widgets/discount_dialog.dart';
 import 'package:provider_mersal/view/product/widgets/row_drop_down.dart';
 import 'package:provider_mersal/view/widgets/custom_loading.dart';
@@ -203,6 +204,18 @@ class EditProductScreen extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(height: 15.h),
+                                      RowDropDown(
+                                        title: ' نوع الطعام',
+
+                                        drop: CategoryFoodTypes(
+                                          types: controller.foodtypes,
+                                          selectedFood: controller.selectedFood,
+                                          onChanged: (value) {
+                                            controller.setSelectedFood(value);
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(height: 15.h),
                                       CustomTextFormField(
                                         keyboardType: TextInputType.number,
                                         controller: controller.priceController,
@@ -242,7 +255,7 @@ class EditProductScreen extends StatelessWidget {
                                                           .firstDateDiscount,
                                                       controller
                                                           .lastDateDiscount,
-                                                     () {
+                                                      () {
                                                         controller.addDiscount(
                                                           productModel.id
                                                               .toString(),

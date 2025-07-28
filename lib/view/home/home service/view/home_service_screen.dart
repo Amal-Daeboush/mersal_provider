@@ -8,7 +8,6 @@ import 'package:provider_mersal/core/constant/styles.dart';
 import 'package:provider_mersal/view/details%20screen/view/details_screen.dart';
 import 'package:provider_mersal/view/earnings/view/earning_screen.dart';
 import 'package:provider_mersal/view/home/home%20service/controller/home_services_controller.dart';
-import 'package:provider_mersal/view/home/widgets/card/card_product.dart';
 import 'package:provider_mersal/view/home/widgets/card/card_services.dart';
 import 'package:provider_mersal/view/home/widgets/card_row.dart';
 import 'package:provider_mersal/view/home/widgets/product_shimmer.dart';
@@ -40,7 +39,7 @@ class HomeServiceScreen extends StatelessWidget {
             style: Styles.style1.copyWith(color: AppColors.greyColor3),
           ),
           subtitle: Text(
-            ConstData.user!.user.name ?? '',
+               ConstData.nameUser,
             style: Styles.style6.copyWith(color: AppColors.black2),
           ),
           trailing: Image.asset(
@@ -66,7 +65,7 @@ class HomeServiceScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 15.h),
                   InkWell(
-                    onTap: () => Get.to(const EarningScreen()),
+                 //   onTap: () => Get.to(const EarningScreen()),
                     child: CardRow(
                       ordersCounts: controller.orders.length.toString(),
                     ),

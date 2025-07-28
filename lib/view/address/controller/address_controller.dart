@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:provider_mersal/core/class/crud.dart';
 import 'package:provider_mersal/core/constant/api_links.dart';

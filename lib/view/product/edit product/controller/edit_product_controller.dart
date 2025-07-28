@@ -26,8 +26,7 @@ class EditProductController extends GetxController {
   String message = '';
   final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   TextEditingController descount = TextEditingController();
-  TextEditingController firstDateDiscount = TextEditingController();
-
+  TextEditingController firstDateDiscount = TextEditingController(); 
   TextEditingController lastDateDiscount = TextEditingController();
   final ImagePicker picker = ImagePicker();
   List<CategoryModel> categories = [];
@@ -35,33 +34,23 @@ class EditProductController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController priceController = TextEditingController();
-
   TextEditingController quantity = TextEditingController();
   int? categoryId;
   int? FoodId;
   RxBool isLoading = false.obs;
-  void setSelectedCategory(CategoryModel? category) {
-    selectedCategory = category;
-    for (var c in categories) {
-      if (c.name == selectedCategory) {
-        categoryId == c.id;
-        break;
-      }
-    }
+  
+ void setSelectedCategory(CategoryModel? category) {
+  selectedCategory = category;
+  categoryId = category?.id;
+  update();
+}
 
-    update();
-  }
+void setSelectedFood(FoodTypeModel? food) {
+  selectedFood = food;
+  FoodId = food?.id;
+  update();
+}
 
-  void setSelectedFood(FoodTypeModel? food) {
-    selectedFood = food;
-    for (var c in foodtypes) {
-      if (c.title == selectedFood) {
-        FoodId == c.id;
-        break;
-      }
-    }
-    update();
-  }
 
   Future<dynamic> getCategories() async {
     statusRequest = StatusRequest.loading;
@@ -120,15 +109,30 @@ class EditProductController extends GetxController {
 
   @override
   void onInit() {
-    if (ConstData.user!.user.type == 'food_provider') {
-      getFoodTypes();
-    }
-    getCategories();
+    super.onInit();
+
     nameController.text = productModel.name;
     descController.text = productModel.description;
     quantity.text = productModel.quantity!;
     priceController.text = productModel.price;
-    super.onInit();
+
+    if (ConstData.user!.user.type == 'food_provider') {
+      getFoodTypes().then((_) {
+        selectedFood = foodtypes.firstWhere(
+          (food) => food.title == productModel.foodType,
+          orElse: () => foodtypes.first,
+        );
+        update();
+      });
+    }
+
+    getCategories().then((_) {
+      selectedCategory = categories.firstWhere(
+        (c) => c.id == productModel.categoryId,
+        orElse: () => categories.first,
+      );
+      update();
+    });
   }
 
   final ProductModel productModel;
@@ -277,8 +281,8 @@ class EditProductController extends GetxController {
     isLoading.value = false;
 
     if (response == StatusRequest.success) {
-               HomeProductController homeProductController = Get.find();
-        homeProductController.getProduct();
+      HomeProductController homeProductController = Get.find();
+      homeProductController.getProduct();
 
       Get.snackbar('نجاح', 'تمت إضافة الخصم بنجاح');
     } else {

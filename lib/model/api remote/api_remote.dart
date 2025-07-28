@@ -15,11 +15,16 @@ class ApiRemote {
 
     return response.fold((l) => l, (r) => r);
   }
-    Future<dynamic> verificationModel(Map<String, dynamic> data) async {
+
+  Future<dynamic> verificationModel(
+    Map<String, dynamic> data,
+    String url,
+    bool token,
+  ) async {
     var response = await Crud().postData(
-      '${ApiLinks.verify_otp}',
+      url,
       data,
-      ApiLinks().getHeaderWithToken(),
+      token ? ApiLinks().getHeaderWithToken() : ApiLinks().getHeader(),
       false,
     );
 
@@ -78,7 +83,8 @@ class ApiRemote {
 
     return response.fold((l) => l, (r) => r);
   }
-  Future<dynamic> AddFoodTypeModel(Map<String, dynamic> data,String id,) async {
+
+  Future<dynamic> AddFoodTypeModel(Map<String, dynamic> data, String id) async {
     var response = await Crud().postData(
       '${ApiLinks.addFoodTypes}/$id',
       data,
@@ -88,21 +94,21 @@ class ApiRemote {
 
     return response.fold((l) => l, (r) => r);
   }
-   Future<dynamic> deleteFoodTypeModel(
+
+  Future<dynamic> deleteFoodTypeModel(
     String url,
     Map<String, dynamic> data,
     String id,
   ) async {
     var response = await Crud().postData(
-      '${ApiLinks.deleteFoodTypes }/$id',
+      '${ApiLinks.deleteFoodTypes}/$id',
       data,
       ApiLinks().getHeaderWithToken(),
-      false
+      false,
     );
 
     return response.fold((l) => l, (r) => r);
   }
-
 
   Future<dynamic> deleteProductModel(
     String url,
@@ -119,13 +125,25 @@ class ApiRemote {
   }
 
   Future<dynamic> UpdateInfoProductModel(Map<String, dynamic> data) async {
-    var response = await Crud().postData(
+    var response = await Crud().post(
       ConstData.producter
-          ? '${ApiLinks.updateProfileProduct}'
+          ? ApiLinks.updateProfileProduct
           : ApiLinks.updateProfileService,
       data,
       ApiLinks().getHeaderWithToken(),
-      false,
+    );
+
+    return response.fold((l) => l, (r) => r);
+  }
+
+  Future<dynamic> changeStatusOrdersServicesModel(
+    Map<String, dynamic> data,
+    String id,
+  ) async {
+    var response = await Crud().post(
+      '${ApiLinks.changeStatusOrdersServices}/$id',
+      data,
+      ApiLinks().getHeaderWithToken(),
     );
 
     return response.fold((l) => l, (r) => r);
@@ -155,7 +173,12 @@ class ApiRemote {
     );
     return response.fold((l) => l, (r) => StatusRequest.success);
   }
-   Future<dynamic> AddDiscountModel(Map<String, dynamic> data,String  url,String id,) async {
+
+  Future<dynamic> AddDiscountModel(
+    Map<String, dynamic> data,
+    String url,
+    String id,
+  ) async {
     var response = await Crud().postData(
       '${url}/$id',
       data,

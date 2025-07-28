@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider_mersal/core/constant/const_data.dart';
+import 'package:provider_mersal/view/authentication/verfication/view/verfication_phon_screen.dart';
 import 'package:provider_mersal/view/botttom%20nav%20bar/view/bottom_nav_bar_screen.dart';
 
 import '../../authentication/authentication/view/authentication_screen.dart';
-
 
 class SplashController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -66,20 +66,26 @@ class SplashController extends GetxController
     controllerAnimation.forward();
 
     controllerAnimation.addStatusListener((status) {
-    if (status == AnimationStatus.completed) {
+      if (status == AnimationStatus.completed) {
         var token = ConstData.token;
-      var product = ConstData.producter;
+        var product = ConstData.producter;
         print('--------------------');
 
-        print('---------$token-----------'); print('---------${ConstData.user}-----------');
+        print('---------$token-----------');
+        print('---------${ConstData.user}-----------');
         print('---------$product-----------');
         Future.delayed(const Duration(seconds: 3), () {
           if (token == '') {
             Get.off(AuthenticationScreen());
+          } else if (token != '' && ConstData.user?.user.otp == '0') { Get.off(VerificationPhonScreen(
+            isForgetpass: false,
+              email:ConstData.user!.user.email!,
+             
+            )) ;
           } else {
-            ConstData.producter?
-             Get.off(BottomNavBarScreen(prov: 'product_provider',))
-          :  Get.off(BottomNavBarScreen(prov: 'service_provider',));
+            ConstData.producter
+                ? Get.off(BottomNavBarScreen(prov: 'product_provider'))
+                : Get.off(BottomNavBarScreen(prov: 'service_provider'));
           }
         });
         // Uncomment the line below to navigate after the animation
@@ -93,25 +99,3 @@ class SplashController extends GetxController
     super.dispose();
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  

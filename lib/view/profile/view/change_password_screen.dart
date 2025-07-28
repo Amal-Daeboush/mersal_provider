@@ -8,7 +8,6 @@ import 'package:provider_mersal/view/profile/controller/change_password_controll
 import 'package:provider_mersal/view/widgets/app%20bar/container_app_bar.dart';
 import 'package:provider_mersal/view/widgets/custom_loading.dart';
 
-
 import '../../../core/constant/app_colors.dart';
 import '../../../core/constant/styles.dart';
 import '../../authentication/widget/text_field/custom_text_form_field.dart';
@@ -39,28 +38,34 @@ class ChangePasswordScreen extends StatelessWidget {
                         children: [
                           ContainerAppBar(
                             isSearch: false,
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: [
-                                const SizedBox(width: 10),
-                                Text(
-                                  'الرقم السري',
-                                  style: Styles.style1.copyWith(
-                                    color: AppColors.whiteColor,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 15,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'الرقم السري',
+                                    style: Styles.style1.copyWith(
+                                      color: AppColors.whiteColor,
+                                    ),
                                   ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: AppColors.whiteColor,
-                                    size: 20,
+                                  IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: AppColors.whiteColor,
+                                      size: 20,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: 20.h),
@@ -72,8 +77,7 @@ class ChangePasswordScreen extends StatelessWidget {
                                   vertical: 10,
                                 ),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ListTile(
                                       title: Text(

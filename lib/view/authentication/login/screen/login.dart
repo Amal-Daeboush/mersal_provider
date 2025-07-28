@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider_mersal/view/authentication/authentication/view/authentication_screen.dart';
+import 'package:provider_mersal/view/authentication/forget%20password/view/forget_pass_screen.dart';
 import 'package:provider_mersal/view/authentication/login/controller/login_controller.dart';
-
-import 'package:provider_mersal/view/authentication/reset_password/view/reset_password_screen.dart';
 import 'package:provider_mersal/view/authentication/widget/custom_container_button/custom_button_google.dart';
 import 'package:provider_mersal/view/authentication/widget/logo/custom_logo.dart';
 import 'package:provider_mersal/view/widgets/custom_loading.dart'
@@ -18,8 +17,7 @@ import '../../widget/custom_or.dart';
 import '../../widget/text_field/custom_text_form_field.dart';
 
 class LoginScreen extends StatelessWidget {
-  final String provider;
-  const LoginScreen({super.key, required this.provider});
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +30,7 @@ class LoginScreen extends StatelessWidget {
               horizontal: AppSizes.defaultSpace,
             ),
             child: GetBuilder(
-              init: LoginController(provider: provider),
+              init: LoginController(),
               builder: (controller) {
                 return controller.isLoading
                     ? Padding(
@@ -86,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                           SizedBox(height: 20.h),
                           CustomTextFormField(
                             controller: controller.emailController,
-                            hintText: 'اسم المستخدم او الايميل',
+                            hintText: 'الايميل',
                             obscureText: false,
                             isPassWord: false,
                           ),
@@ -120,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 15.h),
                           TextButton(
-                            onPressed: () => Get.off(ResetPasswordScreen()),
+                            onPressed: () => Get.off(ForgetPassScreen()),
                             child: Text(
                               'نسيت كلمه السر؟',
                               style: Styles.style1.copyWith(
@@ -131,9 +129,15 @@ class LoginScreen extends StatelessWidget {
                           SizedBox(height: 5.h),
                           CustomOR(),
                           SizedBox(height: 5.h),
-                          const CustomButtonGoogle(isGoogle: false),
+                          CustomButtonGoogle(
+                            isGoogle: false,
+                            onTap: () => controller.loginGoogle(false),
+                          ),
                           SizedBox(height: 5.h),
-                          const CustomButtonGoogle(isGoogle: true),
+                          CustomButtonGoogle(
+                            isGoogle: true,
+                            onTap: () => controller.loginGoogle(true),
+                          ),
                         ],
                       ),
                     );

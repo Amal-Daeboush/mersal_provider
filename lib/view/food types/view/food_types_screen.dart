@@ -40,7 +40,8 @@ class FoodTypesScreen extends StatelessWidget {
                       height: HelperFunctions.screenHeight() / 6,
                       color: AppColors.primaryColor,
                       child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                     padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
                         child: SubscribeAppBar(isSubscrib: false),
                       ),
                     ),

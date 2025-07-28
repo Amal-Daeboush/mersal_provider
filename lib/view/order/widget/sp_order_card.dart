@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_mersal/core/class/helper_functions.dart';
-import 'package:provider_mersal/core/constant/const_data.dart';
 import 'package:provider_mersal/core/constant/styles.dart';
 import 'package:provider_mersal/model/order_model.dart';
 import '../../../../../core/constant/app_colors.dart';
@@ -189,7 +187,7 @@ class OrderCard2 extends StatelessWidget {
                     ],
                   ),
                   // but
-                  order.orderDetails.status == "pending"
+                 /*  order.orderDetails.status == "pending"
                       ? Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -229,7 +227,7 @@ class OrderCard2 extends StatelessWidget {
                           ),
                         ],
                       )
-                      : SizedBox(),
+                      : SizedBox(), */
                 ],
               ),
             ],

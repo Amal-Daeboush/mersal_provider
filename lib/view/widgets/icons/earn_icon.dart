@@ -10,12 +10,13 @@ import '../../../core/constant/app_colors.dart';
 
 class EarnIcon extends StatelessWidget {
   final bool isHomeScreen;
-  const EarnIcon({super.key, required this.isHomeScreen});
+  final void Function() onTap;
+  const EarnIcon({super.key, required this.isHomeScreen, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.to(EarningScreen()),
+      onTap: onTap,
       child: Container(
                       decoration: BoxDecoration(
                       //  border: Border.all(color: AppColors.primaryColor),

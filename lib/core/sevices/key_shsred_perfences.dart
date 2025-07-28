@@ -8,5 +8,7 @@ class SharedPreferencesKey {
       userName = "userName",
       userEmail = "userEmail",
       image = "image",
+      national = 'national',
+      otp = 'otp',
       producter = "producter";
 }

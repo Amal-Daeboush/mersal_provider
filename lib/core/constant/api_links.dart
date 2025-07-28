@@ -1,8 +1,8 @@
 import 'package:provider_mersal/core/constant/const_data.dart';
 
 class ApiLinks {
- // static const String server = "http://192.168.1.12:8000/api";
-  static const String server= "https://highleveltecknology.com/Ms/api";
+  static const String server = "http://192.168.1.12:8000/api";
+  //static const String server= "https://highleveltecknology.com/Ms/api";
   // ================================= Images ================================== //
   static const String imagesStatic = "";
   // ================================= user info  ================================== //
@@ -13,6 +13,13 @@ class ApiLinks {
   static const String google = "$server/auth/google/redirect";
   static const String facebook = "$server/auth/facebook/redirect";
   static const String verify_otp = "$server/verify_otp";
+  static const String resend_otp = "$server/resend-otp";
+  static const String forget_pass = "$server/forget-password";
+  static const String reset_pass = "$server/reset-password";
+
+  // ================================= COMMISSION================================== //
+  static const String get_commission_product =
+      "$server/product_provider/commissions/calculate";
 
   // ================================= subscribe================================== //
   static const String get_web_subscribe =
@@ -83,6 +90,8 @@ class ApiLinks {
 
   static const String getOrdersServices =
       "$server/service_provider/reservation/get_all";
+  static const String changeStatusOrdersServices =
+      "$server/service_provider/reservation/update_status";
 
   // ================================= order =====================
   static const String reservation = "$server/user/reservation/store";
@@ -91,6 +100,10 @@ class ApiLinks {
   static const String getConversations = "$server/getInteractedUsers";
   static const String getConversation = "$server/getConversation";
   static const String sendMessage = "$server/SendTo";
+   // ================================= notification =====================
+  static const String getNotification = "$server/my_notification";
+  static const String readable_massege = "$server/readable_massege";
+  static const String read_notificatio = "$server/read_notificatio";
   // ================================= discount =====================
   static const String addProductDiscount =
       "$server/product_provider/discount/store";

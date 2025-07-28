@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../core/constant/app_colors.dart';
-import '../../login/screen/login_phone_screen.dart';
 
 class ResetPasswordController extends GetxController {
   final GlobalKey<FormState> keyForm = GlobalKey<FormState>();
@@ -10,7 +8,7 @@ class ResetPasswordController extends GetxController {
 
   void register() {
     if (keyForm.currentState?.validate() ?? false) {
-     // Get.off(LoginPhoneScreen());
+      // Get.off(LoginPhoneScreen());
     } else {
       Get.snackbar(
         'Error',

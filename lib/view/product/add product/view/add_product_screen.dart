@@ -177,7 +177,7 @@ class AddProductScreen extends StatelessWidget {
 
                                         isfood
                                             ? RowDropDown(
-                                              title: 'نوع الطعام',
+                                              title:' نوع الطعام',
                                               drop: CategoryFoodTypes(
                                                 types: controller.foodtypes,
                                                 selectedFood:

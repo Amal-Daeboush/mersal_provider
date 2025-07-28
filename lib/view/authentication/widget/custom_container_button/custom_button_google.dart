@@ -9,12 +9,13 @@ import '../../../../core/constant/styles.dart';
 
 class CustomButtonGoogle extends StatelessWidget {
   final bool isGoogle;
-
-  const CustomButtonGoogle({super.key, required this.isGoogle});
+final void Function()? onTap;
+  const CustomButtonGoogle({super.key, required this.isGoogle, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return CustomContainerButton(
+      onTap:onTap ,
       borderColor: AppColors.whiteColor2,
       color: AppColors.whiteColor2,
       child: Row(
