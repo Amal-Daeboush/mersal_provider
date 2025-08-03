@@ -69,7 +69,7 @@ class CardProduct extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 5.w),
-                          isProductCard
+                        /*   isProductCard
                               ? CustomSmallBut(
                                 onTap: refresh,
                                 icon: const Icon(
@@ -79,7 +79,7 @@ class CardProduct extends StatelessWidget {
                                 ),
                               )
                               : const SizedBox(),
-                          SizedBox(width: 5.w),
+                          SizedBox(width: 5.w), */
                           CustomSmallBut(
                             onTap: edit,
                             icon: const Icon(

@@ -6,15 +6,15 @@ import 'package:provider_mersal/model/ratings_model.dart';
 import '../card_opinion.dart';
 
 class OpinionsList extends StatelessWidget {
-    final List<RatingModel> ratings;
-  const OpinionsList({super.key, required this.ratings});
+    final List<RatingModel> ratings;  final String? message;
+  const OpinionsList({super.key, required this.ratings, this.message});
 
   @override
   Widget build(BuildContext context) {
 
     return 
     ratings.isEmpty? Center(
-      child: Text('لا يوجد تعليقات بعد',style: Styles.style1,),
+      child: Text(message??'لا يوجد تعليقات بعد',style: Styles.style1,),
     ):
     ListView(
       children: [

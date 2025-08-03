@@ -68,7 +68,7 @@ class CommiessionModel {
 }
 
 class CommissionDetail {
-    int? orderId;
+    String? orderId;
     int? productId;
     String? productName;
     int? categoryId;
@@ -93,7 +93,7 @@ class CommissionDetail {
     });
 
     CommissionDetail copyWith({
-        int? orderId,
+        String? orderId,
         int? productId,
         String? productName,
         int? categoryId,

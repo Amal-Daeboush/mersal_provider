@@ -8,6 +8,7 @@ import 'package:provider_mersal/core/constant/styles.dart';
 import 'package:provider_mersal/model/reservation_model.dart';
 import 'package:provider_mersal/view/chat%20screen/view/your_chat_screen.dart';
 import 'package:provider_mersal/view/order/controller/order_controller.dart';
+import 'package:provider_mersal/view/order/view/user_location_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/constant/app_colors.dart';
 
@@ -36,7 +37,8 @@ class ReservationCard extends StatelessWidget {
         return '$time\n$date';
       }
     }
-
+    print(order.userInfo!.user.lat??'');
+   print(order.userInfo!.user.name);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
@@ -47,6 +49,8 @@ class ReservationCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: HelperFunctions.screenWidth(),
@@ -94,7 +98,8 @@ class ReservationCard extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h),
                             Text(
-                              'المنصوره شارع احمد ماهر',
+                              order.userInfo?.profile.address ??
+                                  'موقع غير معروف',
                               style: Styles.style5.copyWith(
                                 color: AppColors.black,
                               ),
@@ -260,6 +265,30 @@ class ReservationCard extends StatelessWidget {
                       )
                       : SizedBox(),
                 ],
+              ),
+              GestureDetector(
+                onTap:
+                    () => Get.to(
+                      UserLocationScreen(
+                        lat: order.userInfo!.user.lat!??'',
+                        lang: order.userInfo!.user.lang!??'',
+                      ),
+                    ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: AppColors.primaryColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Text(
+                      'عرض موقع العميل',
+                      style: Styles.style5.copyWith(
+                        color: AppColors.whiteColor,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

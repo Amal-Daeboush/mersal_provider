@@ -12,8 +12,8 @@ String reservationModelToJson(ReservationModel data) => json.encode(data.toJson(
 
 class ReservationModel {
     final int id;
-    final int userId;
-    final int productId;
+    final String userId;
+    final dynamic productId;
     final String status;
     final String totalPrice;
     final String originalPrice;
@@ -26,7 +26,7 @@ class ReservationModel {
     final dynamic couponCode;
     final DateTime createdAt;
     final DateTime updatedAt;
-    final int laravelThroughKey;
+    final dynamic laravelThroughKey;
     final Product product;
     final User user;
     OtherUserInfo? userInfo;
@@ -101,11 +101,11 @@ class ReservationModel {
 class Product {
     final int id;
     final String name;
-    final int categoryId;
+    final dynamic categoryId;
     final String description;
     final String price;
     final String providerableType;
-    final int providerableId;
+    final dynamic providerableId;
     final dynamic quantity;
     final String timeOfService;
     final dynamic foodType;
@@ -168,7 +168,7 @@ class Product {
 
 class Image {
     final int id;
-    final int productId;
+    final dynamic productId;
     final String imag;
     final DateTime createdAt;
     final DateTime updatedAt;

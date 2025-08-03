@@ -35,17 +35,12 @@ class EditServiceController extends GetxController {
   TextEditingController lastDateDiscount = TextEditingController();
   int? categoryId;
   bool isDescount = false;
-  void setSelectedCategory(CategoryModel? category) {
-    selectedCategory = category;
-    for (var c in categories) {
-      if (c.name == selectedCategory) {
-        categoryId == c.id;
-        break;
-      }
-    }
-
-    update();
-  }
+  
+ void setSelectedCategory(CategoryModel? category) {
+  selectedCategory = category;
+  categoryId = category?.id;
+  update();
+}
 
   Future<void> selectDurationWithTimePicker() async {
     TimeOfDay? picked = await showTimePicker(
@@ -131,6 +126,13 @@ class EditServiceController extends GetxController {
 
     priceController.text = productModel.price;
     service_time.text = productModel.timeOfService!;
+      getCategories().then((_) {
+      selectedCategory = categories.firstWhere(
+        (c) => c.id == productModel.categoryId,
+        orElse: () => categories.first,
+      );
+      update();
+    });
     super.onInit();
   }
 

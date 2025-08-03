@@ -202,7 +202,7 @@ class HomeProductController extends GetxController {
     );
   }
 
-  Future<OtherUserInfo?> fetchOtherUser(int userId) async {
+  Future<OtherUserInfo?> fetchOtherUser(String userId) async {
     final url = '${ApiLinks.getUser}/$userId';
 
     try {

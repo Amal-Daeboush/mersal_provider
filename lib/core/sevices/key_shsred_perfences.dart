@@ -10,5 +10,7 @@ class SharedPreferencesKey {
       image = "image",
       national = 'national',
       otp = 'otp',
+      status = "status",
+          phone = "phone",
       producter = "producter";
 }

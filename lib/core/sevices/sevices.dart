@@ -15,14 +15,16 @@ class MyServices extends GetxService {
     shared = await SharedPreferences.getInstance();
 
     ConstData.token = await getValue(SharedPreferencesKey.tokenkey) ?? '';
+    ConstData.status = await getValue(SharedPreferencesKey.status) ?? '';
     ConstData.otp = await getValue(SharedPreferencesKey.otp) ?? '';
     ConstData.producter =
         await getValueBool(SharedPreferencesKey.producter) ?? false;
 
-    ///  ConstData.userid = await getValue(SharedPreferencesKey.userId) ?? '';
+    // ConstData.userid = await getValue(SharedPreferencesKey.userId) ?? '';
     ConstData.nameUser = await getValue(SharedPreferencesKey.userName) ?? '';
     ConstData.national = await getValue(SharedPreferencesKey.national) ?? '';
     ConstData.emailUser = await getValue(SharedPreferencesKey.userEmail) ?? '';
+      ConstData.phone = await getValue(SharedPreferencesKey.phone) ?? '';
     ConstData.image = await getValue(SharedPreferencesKey.image) ?? '';
     ConstData.isBoarding =
         await getValue(SharedPreferencesKey.isBoarding) ?? '';
@@ -88,6 +90,13 @@ class MyServices extends GetxService {
     return ConstData.national;
   }
 
+  setConstImage() async {
+    ConstData.image = await getValue(SharedPreferencesKey.image) ?? '';
+    print('your image is ......');
+    print(ConstData.image);
+    return ConstData.image;
+  }
+
   setConstProductVendor() async {
     ConstData.producter = await getValueBool(SharedPreferencesKey.producter);
     print('your product is ......');
@@ -109,20 +118,18 @@ class MyServices extends GetxService {
     return ConstData.emailUser;
   }
 
-  setConstImage() async {
-    ConstData.image = await getValue(SharedPreferencesKey.image) ?? '';
-    print('your image is ......');
-    print(ConstData.image);
-    return ConstData.image;
-  }
-
   setConstName() async {
     ConstData.nameUser = await getValue(SharedPreferencesKey.userName) ?? '';
     print('your name is ......');
     print(ConstData.nameUser);
     return ConstData.nameUser;
   }
-
+ setConstPhone() async {
+    ConstData.phone = await getValue(SharedPreferencesKey.phone) ?? '';
+    print('your phone is ......');
+    print(ConstData.phone);
+    return ConstData.phone;
+  }
   setConstuser() async {
     ConstData.user = (await getUserInfo())!;
     print('your user is ......');
@@ -143,6 +150,13 @@ class MyServices extends GetxService {
     print('your otp is ......');
     print(ConstData.otp);
     return ConstData.otp;
+  }
+
+  setConstStatus() async {
+    ConstData.status = await getValue(SharedPreferencesKey.status) ?? '';
+    print('your status is ......');
+    print(ConstData.status);
+    return ConstData.status;
   }
 
   Future<UserModel?> getUserInfo() async {

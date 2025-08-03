@@ -39,23 +39,28 @@ class EditProfileScreen extends StatelessWidget {
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child:  Form(
-                      key: controller.keyForm,
+              child: Form(
+                key: controller.keyForm,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(height: 20),
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.charcoalGrey),
                         shape: BoxShape.circle,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(5),
                         child: CircleAvatar(
-                          radius: 50.r,
-                          backgroundImage: AssetImage(AppImageAsset.profile),
-                        ),
+  radius: 70.r,
+  backgroundImage: ConstData.image.isEmpty
+      ? const AssetImage(AppImageAsset.user)
+      : NetworkImage(ConstData.image) as ImageProvider,
+),
+
+
                       ),
                     ),
                     Text(ConstData.nameUser, style: Styles.style1),
@@ -64,7 +69,7 @@ class EditProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
+                        /* Container(
                           //   height: 30,
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColors.lightGrey),
@@ -76,8 +81,8 @@ class EditProfileScreen extends StatelessWidget {
                             size: 20,
                             color: AppColors.red,
                           ),
-                        ),
-                        SizedBox(width: 10.w),
+                        ), */
+                        //SizedBox(width: 10.w),
                         GestureDetector(
                           onTap: () => controller.pickImage(),
                           child: Container(
@@ -105,17 +110,18 @@ class EditProfileScreen extends StatelessWidget {
                       isPassWord: false,
                     ),
                     SizedBox(height: 10.h),
-                
-                    /*    CustomTextFormField(
+
+                      CustomTextFormField(
+                        controller: controller.phone,
                       hintText: 'رقم الهاتف',
                       obscureText: false,
                       isPassWord: false,
                     ),
-                    SizedBox(height: 10.h), */
+                   
                     SizedBox(height: 10.h),
                     CustomTextFormField(
                       controller: controller.national_id,
-                     // enabel: false,
+                      // enabel: false,
                       suffixIcon: Icon(
                         Iconsax.gallery_export,
                         size: 20,
@@ -128,7 +134,7 @@ class EditProfileScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
                     CustomContainerButton(
                       onTap: () => controller.updateName(),
-                      
+
                       borderColor: AppColors.primaryColor,
                       color: AppColors.primaryColor,
                       child: Text(

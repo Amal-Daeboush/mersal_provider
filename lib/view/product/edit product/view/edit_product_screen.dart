@@ -51,12 +51,13 @@ class EditProductScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CircleAvatar(
-                              radius: 20.r,
-                              backgroundImage: const AssetImage(
-                                AppImageAsset.profile,
-                              ),
-                            ),
+                               CircleAvatar(
+            radius: 20.r,
+            backgroundImage:
+                ConstData.image.isEmpty
+                    ? const AssetImage(AppImageAsset.user)
+                    : NetworkImage(ConstData.image) as ImageProvider,
+          ),
                             ArrowBackIcon(
                               isHomeScreen: false,
                               onTap: () => Get.back(),
@@ -204,7 +205,7 @@ class EditProductScreen extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(height: 15.h),
-                                      RowDropDown(
+                                 isfood?       RowDropDown(
                                         title: ' نوع الطعام',
 
                                         drop: CategoryFoodTypes(
@@ -214,7 +215,7 @@ class EditProductScreen extends StatelessWidget {
                                             controller.setSelectedFood(value);
                                           },
                                         ),
-                                      ),
+                                      ):SizedBox(),
                                       SizedBox(height: 15.h),
                                       CustomTextFormField(
                                         keyboardType: TextInputType.number,

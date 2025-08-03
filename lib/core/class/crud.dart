@@ -31,13 +31,17 @@ class Crud {
             var token = decodeResponse['access_token'];
             var user = UserModel.fromRawJson(response.body);
             var name = user.user.name;
-             var otp = user.user.otp;
+            var otp = user.user.otp;
+                        var image = user.user.imagePath;
+
             //   var phone = decodeResponse['data']['email'];
             var notition = user.user.nationalId;
-
+var phone = user.user.phone;
             await MyServices().saveUserInfo(user);
             await MyServices.saveValue(SharedPreferencesKey.userName, name);
-             await MyServices.saveValue(SharedPreferencesKey.otp, otp!);
+            await MyServices.saveValue(SharedPreferencesKey.otp, otp!);
+              await MyServices.saveValue(SharedPreferencesKey.image, image??'');
+                await MyServices.saveValue(SharedPreferencesKey.phone, phone??'');
             await MyServices.saveValue(
               SharedPreferencesKey.national,
               notition!,
@@ -45,7 +49,9 @@ class Crud {
             //   await MyServices.saveValue(SharedPreferencesKey.userPhone, '678');
 
             await MyServices().setConstName();
-                    await MyServices().setConstOtp();
+                      await MyServices().setConstImage();
+                                await MyServices().setConstPhone();
+            await MyServices().setConstOtp();
             await MyServices().setConstNotationId();
             await MyServices.saveValue(SharedPreferencesKey.tokenkey, token);
             await MyServices().saveUserInfo(user);
@@ -76,31 +82,29 @@ class Crud {
     }
   }
 
-  Future<Either<StatusRequest, dynamic>> getData(
-    String url,
-    Map<String, String>? headers,
-  ) async {
-    try {
-      if (await HelperFunctions.checkInternet()) {
-        var response = await http.get(Uri.parse(url), headers: headers);
+Future<Either<StatusRequest, dynamic>> getData(
+  String url,
+  Map<String, String>? headers,
+) async {
+  try {
+    if (await HelperFunctions.checkInternet()) {
+      var response = await http.get(Uri.parse(url), headers: headers);
 
-        print(response);
-
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          var responseBody = jsonDecode(response.body);
-          print(response.body);
-          return Right(responseBody);
-        } else {
-          return const Left(StatusRequest.serverFailure);
-        }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var responseBody = jsonDecode(response.body);
+        return Right(responseBody);
       } else {
-        return const Left(StatusRequest.offlineFailure);
+        // هنا ترجع الجسم كامل مع الكود
+        var errorBody = jsonDecode(response.body);
+        return Right({'statusCode': response.statusCode, 'error': errorBody});
       }
-    } catch (_) {
-      // print();
-      return const Left(StatusRequest.serverFailure);
+    } else {
+      return const Left(StatusRequest.offlineFailure);
     }
+  } catch (_) {
+    return const Left(StatusRequest.serverFailure);
   }
+}
 
 
   Future<Either<StatusRequest, dynamic>> post(
@@ -128,7 +132,6 @@ class Crud {
       return const Left(StatusRequest.serverFailure);
     }
   }
-
 
   Future<Either<StatusRequest, dynamic>> postAddress(
     String url,

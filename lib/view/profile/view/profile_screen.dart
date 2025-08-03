@@ -22,14 +22,14 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     Get.put(ProfileController()); 
+    Get.put(ProfileController());
     return Scaffold(
       backgroundColor: AppColors.whiteColor2,
       body: GetBuilder<ProfileController>(
         builder: (controller) {
           return Column(
             children: [
-                 AppBarProfile(name: controller.name),
+              AppBarProfile(name: controller.name, image: controller.image),
               SizedBox(height: 20.h),
               Expanded(
                 child: Container(
@@ -44,20 +44,23 @@ class ProfileScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          CardInfo(id: 1, onTap: () => Get.to(EditProfileScreen())),
+                          CardInfo(
+                            id: 1,
+                            onTap:
+                                () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => EditProfileScreen(),
+                                  ),
+                                ),
+                          ),
                           Divider(
                             height: 1.h,
                             color: Color.fromARGB(200, 187, 187, 187),
                           ),
                           CardInfo(
                             onTap:
-                                () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                            AddressScreen(isfromHome: true),
-                                  ),
-                                ),
+                                () => Get.to(AddressScreen(isfromHome: true)),
+
                             id: 2,
                           ),
                           Divider(
@@ -84,7 +87,10 @@ class ProfileScreen extends StatelessWidget {
                             height: 1,
                             color: Color.fromARGB(200, 187, 187, 187),
                           ), */
-                          CardInfo(id: 6, onTap: () => Get.to(AppInformation())),
+                          CardInfo(
+                            id: 6,
+                            onTap: () => Get.to(AppInformation()),
+                          ),
                           Divider(
                             height: 1.h,
                             color: Color.fromARGB(200, 187, 187, 187),
@@ -148,7 +154,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
           );
-        }
+        },
       ),
     );
   }

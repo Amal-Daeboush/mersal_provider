@@ -1,8 +1,8 @@
 import 'package:provider_mersal/core/constant/const_data.dart';
 
 class ApiLinks {
-  static const String server = "http://192.168.1.12:8000/api";
-  //static const String server= "https://highleveltecknology.com/Ms/api";
+  //static const String server = "http://192.168.78.222/api";
+  static const String server= "https://mersal.site/Ms/api";
   // ================================= Images ================================== //
   static const String imagesStatic = "";
   // ================================= user info  ================================== //
@@ -130,6 +130,7 @@ class ApiLinks {
       "$server/service_provider/profile/my_info";
   static const String updateProfileService =
       "$server/service_provider/profile/update";
+      
 
   Map<String, String> getHeader() {
     Map<String, String> mainHeader = {'Accept': 'application/json'};

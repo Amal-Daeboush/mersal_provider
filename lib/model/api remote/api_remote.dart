@@ -62,9 +62,9 @@ class ApiRemote {
 
   Future<dynamic> AddrateModel(Map<String, dynamic> data, String id) async {
     var response = await Crud().postData(
-      ConstData.producter
-          ? '${ApiLinks.answer_rating}/$id'
-          : '${ApiLinks.answer_rating_service}/$id',
+      ConstData.user!.user.type == 'service_provider'
+          ? '${ApiLinks.answer_rating_service}/$id'
+          : '${ApiLinks.answer_rating}/$id',
       data,
       ApiLinks().getHeaderWithToken(),
       false,
@@ -152,9 +152,9 @@ class ApiRemote {
   Future<dynamic> deleteReplay(Map<String, dynamic> data, String id) async {
     Crud crud = Crud();
     var response = await crud.deleteData(
-      ConstData.producter
-          ? '${ApiLinks.deleteReplay}/$id'
-          : '${ApiLinks.deleteReplayService}/$id',
+      ConstData.user!.user.type == 'service_provider'
+          ? '${ApiLinks.deleteReplayService}/$id'
+          : '${ApiLinks.deleteReplay}/$id',
       data,
       ApiLinks().getHeaderWithToken(),
     );
@@ -164,9 +164,9 @@ class ApiRemote {
   Future<dynamic> editReplay(String id, Map<String, dynamic> data) async {
     Crud crud = Crud();
     var response = await crud.postData(
-      ConstData.producter
-          ? '${ApiLinks.updateReplay}/$id'
-          : '${ApiLinks.updateReplayServise}/$id',
+    ConstData.user!.user.type == 'service_provider'
+          ? '${ApiLinks.updateReplayServise}/$id'
+          : '${ApiLinks.updateReplay}/$id',
       data,
       ApiLinks().getHeaderWithToken(),
       false,

@@ -65,6 +65,7 @@ dependencies:
   timeago: ^3.2.0
   pusher_channels_flutter: ^2.5.0
   bubble: ^1.2.1
+# cached_network_image: ^3.4.1
 
 
 dev_dependencies:

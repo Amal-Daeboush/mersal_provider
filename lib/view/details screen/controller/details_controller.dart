@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider_mersal/core/class/crud.dart';
@@ -37,20 +36,24 @@ class DetailsController extends GetxController {
 
     Crud crud = Crud();
     var response = await crud.getData(
-    ConstData.producter?  '${ApiLinks.getRatingProductProvider}/$id':'${ApiLinks.getRatingServiceProvider}/$id',
+      ConstData.user!.user.type == 'service_provider'
+          ? '${ApiLinks.getRatingServiceProvider}/$id'
+          : '${ApiLinks.getRatingProductProvider}/$id',
       ApiLinks().getHeaderWithToken(),
     );
 
     response.fold(
       (failure) {
         statusRequest = StatusRequest.failure;
-        message = failure == StatusRequest.offlineFailure
-            ? 'تحقق من الاتصال بالانترنت'
-            : 'حدث خطأ';
+        message =
+            failure == StatusRequest.offlineFailure
+                ? 'تحقق من الاتصال بالانترنت'
+                : 'fhgsdvtv حدث خطأ';
         Get.snackbar('Error', message, snackPosition: SnackPosition.TOP);
         update();
       },
       (data) {
+        print(data);
         if (data != null && data is List) {
           ratings = data.map((item) => RatingModel.fromJson(item)).toList();
           statusRequest = StatusRequest.success;
@@ -70,8 +73,9 @@ class DetailsController extends GetxController {
 
     Crud crud = Crud();
     var response = await crud.getData(
-      ConstData.producter?
-      '${ApiLinks.getAllReplays}/$rateId':      '${ApiLinks.getAllReplaysSrervice}/$rateId',
+    ConstData.user!.user.type == 'service_provider'
+          ? '${ApiLinks.getAllReplaysSrervice}/$rateId'
+          : '${ApiLinks.getAllReplays}/$rateId',
       ApiLinks().getHeaderWithToken(),
     );
 
@@ -82,7 +86,8 @@ class DetailsController extends GetxController {
       },
       (data) {
         if (data != null && data is List) {
-          allReplays[rateId] = data.map((e) => ReplayModel.fromJson(e)).toList();
+          allReplays[rateId] =
+              data.map((e) => ReplayModel.fromJson(e)).toList();
         } else {
           allReplays[rateId] = [];
         }
@@ -125,8 +130,15 @@ class DetailsController extends GetxController {
     }
   }
 
-  Future<void> editReplay(String replayId, String rateId, String newComment) async {
-    var result = await ApiRemote().editReplay(replayId, {'comment': newComment, '_method': 'PUT'});
+  Future<void> editReplay(
+    String replayId,
+    String rateId,
+    String newComment,
+  ) async {
+    var result = await ApiRemote().editReplay(replayId, {
+      'comment': newComment,
+      '_method': 'PUT',
+    });
     if (result == StatusRequest.success) {
       Get.snackbar('تم', 'تم تعديل الرد');
       await getReplays(rateId);

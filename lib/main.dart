@@ -1,20 +1,22 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/date_symbol_data_file.dart';
+import 'package:provider_mersal/core/sevices/key_shsred_perfences.dart';
 import 'package:provider_mersal/core/sevices/sevices.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:provider_mersal/view/notifications%20screen/controller/notification_controller.dart';
 import 'bindings/initial_bindings.dart';
 import 'theme/app_themes.dart';
 import 'view/splash screen/view/splash_screen.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
   await MyServices().initialize();
+  final userId = await MyServices.getValue(SharedPreferencesKey.tokenkey);
+  if (userId != null) {
+    var controller = Get.put(NotificationController());
+    controller.loadNotifications(false);
+  } 
   runApp(const MyApp());
 }
 
@@ -34,11 +36,10 @@ class MyApp extends StatelessWidget {
           initialBinding: InitialBindings(),
           debugShowCheckedModeBanner: false,
           theme: appTheme,
-        //  getPages: routes,
+          //  getPages: routes,
           home: SplashScreen(),
         );
       },
     );
   }
 }
-

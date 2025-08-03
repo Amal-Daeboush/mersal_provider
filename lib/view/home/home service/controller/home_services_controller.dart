@@ -7,12 +7,13 @@ import 'package:provider_mersal/model/api%20remote/api_remote.dart';
 import 'package:provider_mersal/model/order_model.dart';
 import 'package:provider_mersal/model/produt_model.dart';
 import 'package:provider_mersal/model/reservation_model.dart';
+import 'package:provider_mersal/view/status%20screen/view/status_screen.dart';
 
 class HomeServicesController extends GetxController {
   StatusRequest statusRequest = StatusRequest.loading;
   StatusRequest statusRequestOrders = StatusRequest.loading;
-   
   String message = '';
+  String? accountStatus;
   // TextEditingController searchController = TextEditingController();
   bool isSearchActive = false;
 
@@ -21,59 +22,74 @@ class HomeServicesController extends GetxController {
   @override
   void onInit() {
     getServices();
-    getOrderProduct();
+   getOrderProduct();
     super.onInit();
   }
 
- Future<dynamic> getServices() async {
+ Future<void> getServices() async {
   statusRequest = StatusRequest.loading;
   update();
 
   Crud crud = Crud();
   var response = await crud.getData(
-    '${ApiLinks.get_services}',
+    ApiLinks.get_services,
     ApiLinks().getHeaderWithToken(),
   );
 
   response.fold(
     (failure) {
       statusRequest = StatusRequest.failure;
-
-    
-      print('❌ Error: $failure.');
-
-      if (failure == StatusRequest.offlineFailure) {
-        message = 'تحقق من الاتصال بالانترنت';
-      } else {
-        message = failure.toString(); 
-      }
-
+      message = failure == StatusRequest.offlineFailure
+          ? 'تحقق من الاتصال بالانترنت'
+          : 'حدث خطأ أثناء الاتصال بالخادم';
+      print('❌ Error: $failure');
       Get.snackbar('خطأ', message, snackPosition: SnackPosition.TOP);
       update();
     },
     (data) {
       print('✅ Response: $data');
 
+      // 🟡 حالة الخطأ من السيرفر (statusCode != 200)
+      if (data is Map<String, dynamic> && data.containsKey('statusCode')) {
+        int statusCode = data['statusCode'];
+        var errorBody = data['error'];
+
+        if (statusCode == 403 && errorBody['status'] == 'pending' || statusCode == 403 && errorBody['status'] == 'pand') {
+          accountStatus = errorBody['status'];
+          message = errorBody['error'] ?? ' حسابك غير فعال حاليا';
+          statusRequest = StatusRequest.success;
+          update();
+
+          // ✅ الانتقال إلى شاشة الحالة
+          Get.offAll(() => StatusScreen(status: accountStatus!, message: message));
+        } else {
+          message = errorBody?['message'] ?? 'حدث خطأ أثناء تحميل البيانات';
+          statusRequest = StatusRequest.failure;
+          products = [];
+
+          Get.snackbar('خطأ', message, snackPosition: SnackPosition.TOP);
+          update();
+        }
+
+        return; // نوقف هنا
+      }
+
+      // ✅ حالة الرد الصحيح: List
       if (data != null && data is List) {
         products = data.map((item) => ProductModel.fromJson(item)).toList();
         statusRequest = StatusRequest.success;
       } else {
-        // طباعة رسالة الخطأ من الاستجابة (إن وُجدت)
-        message = data?['message'] ?? 'حدث خطأ أثناء تحميل البيانات';
-        products = [];
         statusRequest = StatusRequest.failure;
-
-        Get.snackbar(
-          'خطأ',
-          message,
-          snackPosition: SnackPosition.TOP,
-        );
+        message = 'البيانات غير صالحة أو غير متوقعة';
+        products = [];
+        Get.snackbar('خطأ', message, snackPosition: SnackPosition.TOP);
       }
 
       update();
     },
   );
 }
+
 
   deleteProduct(String id) async {
     statusRequest = StatusRequest.loading;
@@ -100,78 +116,88 @@ class HomeServicesController extends GetxController {
 
     update();
   }
+
   List<OrderModel> orders = [];
   List<ReservationModel> reservcation = [];
-Future<void> getOrderProduct() async {
-  statusRequestOrders = StatusRequest.loading;
-  update();
+  Future<void> getOrderProduct() async {
+    statusRequestOrders = StatusRequest.loading;
+    update();
 
-  Crud crud = Crud();
-  var response = await crud.getData(
-   ConstData.producter? ApiLinks.getOrdersProduct:ApiLinks.getOrdersServices,
-    ApiLinks().getHeaderWithToken(),
-  );
+    Crud crud = Crud();
+    var response = await crud.getData(
+      ConstData.producter
+          ? ApiLinks.getOrdersProduct
+          : ApiLinks.getOrdersServices,
+      ApiLinks().getHeaderWithToken(),
+    );
 
-  response.fold(
-    (failure) {
-      statusRequestOrders = StatusRequest.failure;
-      message = failure == StatusRequest.offlineFailure
-          ? 'تحقق من الاتصال بالانترنت'
-          : 'حدث خطأ';
-      Get.snackbar('خطأ', message, snackPosition: SnackPosition.TOP);
-      orders = [];
-      reservcation = [];
-      update();
-    },
-    (data) {
-      if (data != null && data is Map<String, dynamic>) {
-        if (ConstData.producter) {
-          // product provider
-          var ordersList = data["orders"];
-          if (ordersList is List && ordersList.isNotEmpty) {
-            orders = ordersList
-                .map<OrderModel>((item) => OrderModel.fromJson(item))
-                .toList();
-
-          
-
-            statusRequest = StatusRequest.success;
-          } else {
-            message = 'لا توجد طلبات';
-            orders = [];
-            statusRequest = StatusRequest.failure;
-            Get.snackbar('تنبيه', message, snackPosition: SnackPosition.BOTTOM);
-          }
-        } else {
-          //   (reservation)
-          var reservationsList = data["reservation"];
-          if (reservationsList is List && reservationsList.isNotEmpty) {
-            reservcation = reservationsList
-                .map<ReservationModel>(
-                    (item) => ReservationModel.fromJson(item))
-                .toList();
-
-           
-
-            statusRequestOrders = StatusRequest.success;
-          } else {
-            message = 'لا توجد حجوزات';
-            reservcation = [];
-            statusRequestOrders = StatusRequest.failure;
-            Get.snackbar('تنبيه', message, snackPosition: SnackPosition.BOTTOM);
-          }
-        }
-      } else {
-        message = 'حدث خطأ في جلب البيانات';
+    response.fold(
+      (failure) {
+        statusRequestOrders = StatusRequest.failure;
+        message =
+            failure == StatusRequest.offlineFailure
+                ? 'تحقق من الاتصال بالانترنت'
+                : 'حدث خطأ';
+        Get.snackbar('خطأ', message, snackPosition: SnackPosition.TOP);
         orders = [];
         reservcation = [];
-        statusRequestOrders = StatusRequest.failure;
-        Get.snackbar('خطأ', message, snackPosition: SnackPosition.BOTTOM);
-      }
+        update();
+      },
+      (data) {
+        if (data != null && data is Map<String, dynamic>) {
+          if (ConstData.producter) {
+            // product provider
+            var ordersList = data["orders"];
+            if (ordersList is List && ordersList.isNotEmpty) {
+              orders =
+                  ordersList
+                      .map<OrderModel>((item) => OrderModel.fromJson(item))
+                      .toList();
 
-      update();
-    },
-  );
-}
+              statusRequest = StatusRequest.success;
+            } else {
+              message = 'لا توجد طلبات';
+              orders = [];
+              statusRequest = StatusRequest.failure;
+              Get.snackbar(
+                'تنبيه',
+                message,
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            }
+          } else {
+            //   (reservation)
+            var reservationsList = data["reservation"];
+            if (reservationsList is List && reservationsList.isNotEmpty) {
+              reservcation =
+                  reservationsList
+                      .map<ReservationModel>(
+                        (item) => ReservationModel.fromJson(item),
+                      )
+                      .toList();
 
+              statusRequestOrders = StatusRequest.success;
+            } else {
+              message = 'لا توجد حجوزات';
+              reservcation = [];
+              statusRequestOrders = StatusRequest.failure;
+              Get.snackbar(
+                'تنبيه',
+                message,
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            }
+          }
+        } else {
+          message = 'حدث خطأ في جلب البيانات';
+          orders = [];
+          reservcation = [];
+          statusRequestOrders = StatusRequest.failure;
+          Get.snackbar('خطأ', message, snackPosition: SnackPosition.BOTTOM);
+        }
+
+        update();
+      },
+    );
+  }
 }

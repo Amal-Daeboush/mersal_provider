@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider_mersal/core/class/helper_functions.dart';
 import 'package:provider_mersal/core/constant/app_image_asset.dart';
+import 'package:provider_mersal/core/constant/const_data.dart';
 import 'package:provider_mersal/model/produt_model.dart';
 import 'package:provider_mersal/view/authentication/widget/text_field/custom_text_form_field.dart';
 import 'package:provider_mersal/view/product/widgets/category_drop_down.dart';
@@ -45,12 +46,13 @@ class EditServiceScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CircleAvatar(
-                              radius: 20.r,
-                              backgroundImage: const AssetImage(
-                                AppImageAsset.profile,
-                              ),
-                            ),
+                              CircleAvatar(
+            radius: 20.r,
+            backgroundImage:
+                ConstData.image.isEmpty
+                    ? const AssetImage(AppImageAsset.user)
+                    : NetworkImage(ConstData.image) as ImageProvider,
+          ),
                             ArrowBackIcon(
                               isHomeScreen: false,
                               onTap: () => Get.back(),
@@ -246,17 +248,19 @@ class EditServiceScreen extends StatelessWidget {
 
                                       SizedBox(height: 10.h),
 
-                          
-                              RowDropDown(
-                                title: 'الفئة',
-                                drop: CategoryDropDown(
-                                  categories: controller.categories,
-                                  selectedCategory: controller.selectedCategory,
-                                  onChanged: (value) {
-                                    controller.setSelectedCategory(value);
-                                  },
-                                ),
-                              ),
+                            RowDropDown(
+                                        title: 'الفئة',
+                                        drop: CategoryDropDown(
+                                          categories: controller.categories,
+                                          selectedCategory:
+                                              controller.selectedCategory,
+                                          onChanged: (value) {
+                                            controller.setSelectedCategory(
+                                              value,
+                                            );
+                                          },
+                                        ),
+                                      ),
                               SizedBox(height: 10.h),
                               CustomTextFormField(
                                 controller: controller.service_time,

@@ -102,6 +102,7 @@ class OrderScreen extends StatelessWidget {
                                   Text('المقبولة'),
                                   if (ConstData.producter) Text('قيد التوصيل'),
                                   Text('المنتظره'),
+                                  if (ConstData.producter) Text('المكتملة'),
                                 ],
                                 views:
                                     ConstData.producter
@@ -129,6 +130,11 @@ class OrderScreen extends StatelessWidget {
                                           ),
                                           buildOrderList(
                                             controller.waitOrders,
+                                            controller.statusRequest ==
+                                                StatusRequest.loading,
+                                          ),
+                                            buildOrderList(
+                                            controller.compete,
                                             controller.statusRequest ==
                                                 StatusRequest.loading,
                                           ),

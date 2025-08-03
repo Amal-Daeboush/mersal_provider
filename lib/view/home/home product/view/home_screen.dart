@@ -179,7 +179,7 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                 refresh:
-                                    () => Get.to(const RefreshProductScreen()),
+                                    () => {},
                                 isProductCard: true,
                               ),
                         ),

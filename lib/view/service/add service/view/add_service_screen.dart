@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:provider_mersal/core/class/helper_functions.dart';
 import 'package:provider_mersal/core/class/status_request.dart';
 import 'package:provider_mersal/core/constant/app_image_asset.dart';
+import 'package:provider_mersal/core/constant/const_data.dart';
 import 'package:provider_mersal/view/authentication/widget/text_field/custom_text_form_field.dart';
 import 'package:provider_mersal/view/product/widgets/category_drop_down.dart';
 import 'package:provider_mersal/view/product/widgets/discount_dialog.dart';
@@ -45,11 +46,12 @@ class AddServiceScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CircleAvatar(
-                              radius: 20.r,
-                              backgroundImage: const AssetImage(
-                                AppImageAsset.profile,
-                              ),
-                            ),
+            radius: 20.r,
+            backgroundImage:
+                ConstData.image.isEmpty
+                    ? const AssetImage(AppImageAsset.user)
+                    : NetworkImage(ConstData.image) as ImageProvider,
+          ),
                             ArrowBackIcon(
                               isHomeScreen: false,
                               onTap: () => Get.back(),

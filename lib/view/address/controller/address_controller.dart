@@ -180,12 +180,12 @@ class AddressController extends GetxController {
           if (isHome) {
             print('➡️ trying to go back or navigate');
             //  BuildContext context=BuildContext();
-            Navigator.pop(context);
-            /*   Get.off(
+          //  Navigator.pop(context);
+              Get.offAll(
             BottomNavBarScreen(
               prov: ConstData.producter ? 'product_provider' : 'service_provider',
             ),
-          ); */
+          ); 
           } else {
             Get.offAll(
               BottomNavBarScreen(
@@ -263,7 +263,7 @@ class AddressController extends GetxController {
         CustomSnackBar('تم رفع المعلومات بنجاح', true);
 
         statusRequest = StatusRequest.success;
-        Get.off(
+        Get.offAll(
           BottomNavBarScreen(
             prov:
                 ConstData.user!.user.type != 'service_provider'

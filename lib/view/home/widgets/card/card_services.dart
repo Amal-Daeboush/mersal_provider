@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider_mersal/model/produt_model.dart';
+import 'package:provider_mersal/model/produt_model.dart' as product;
 import 'package:provider_mersal/model/service_model.dart';
 
 import '../../../../core/constant/app_colors.dart';
@@ -11,7 +11,7 @@ import 'custom_small_but.dart';
 
 class CardServices extends StatelessWidget {
   final void Function()? edit;
-  final ProductModel serviceModel;
+  final product.ProductModel serviceModel;
   final void Function()? delete;
   final void Function()? refresh;
   final void Function()? ontap;
@@ -46,11 +46,11 @@ class CardServices extends StatelessWidget {
                 // clipBehavior: Clip.none,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  image: const DecorationImage(
+                  image:  DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(AppImageAsset.discount),
+                    image: NetworkImage(serviceModel.images.first.url )),
                   ),
-                ),
+                
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(

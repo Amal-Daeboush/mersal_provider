@@ -13,7 +13,7 @@ class ProductModel {
     final String name;
     final String description;
     final String price;
-    final dynamic categoryId;
+    final String categoryId;
     final dynamic providerableType;
     final dynamic providerableId;
     final String? quantity;
@@ -211,18 +211,18 @@ class Answer {
 class User {
     final int id;
     final String name;
-    final String image;
+    final String? image;
 
     User({
         required this.id,
         required this.name,
-        required this.image,
+         this.image,
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
-        image: json["image"],
+        image: json["image"]??'',
     );
 
     Map<String, dynamic> toJson() => {

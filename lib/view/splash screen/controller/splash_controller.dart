@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:provider_mersal/core/constant/const_data.dart';
 import 'package:provider_mersal/view/authentication/verfication/view/verfication_phon_screen.dart';
 import 'package:provider_mersal/view/botttom%20nav%20bar/view/bottom_nav_bar_screen.dart';
+import 'package:provider_mersal/view/status%20screen/controller/status_controller.dart';
 
 import '../../authentication/authentication/view/authentication_screen.dart';
 
@@ -68,6 +69,7 @@ class SplashController extends GetxController
     controllerAnimation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         var token = ConstData.token;
+        var status = ConstData.status;
         var product = ConstData.producter;
         print('--------------------');
 
@@ -77,11 +79,15 @@ class SplashController extends GetxController
         Future.delayed(const Duration(seconds: 3), () {
           if (token == '') {
             Get.off(AuthenticationScreen());
-          } else if (token != '' && ConstData.user?.user.otp == '0') { Get.off(VerificationPhonScreen(
-            isForgetpass: false,
-              email:ConstData.user!.user.email!,
-             
-            )) ;
+          } else if (status != 'active') {
+            Get.put(StatusController());
+          } else if (token != '' && ConstData.otp == '0') {
+            Get.off(
+              VerificationPhonScreen(
+                isForgetpass: false,
+                email: ConstData.user!.user.email!,
+              ),
+            );
           } else {
             ConstData.producter
                 ? Get.off(BottomNavBarScreen(prov: 'product_provider'))

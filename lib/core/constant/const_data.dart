@@ -12,12 +12,13 @@ class ConstData {
   static const String map_key = '';
   static String userid = '';
 
+  static String phone = '';
   static late bool islight;
   static String image = '';
   static UserModel? user;
   static String nameUser = '';
   static String otp = '';
-
+  static String status = 'pending';
   static String national = '';
   static String emailUser = '';
   static bool producter = false;

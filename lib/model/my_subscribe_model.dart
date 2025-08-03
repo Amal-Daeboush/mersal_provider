@@ -1,7 +1,7 @@
 class UserSubscribeModel {
   final int? id;
-  final int? providerServiceId;
-  final int? webSubId;
+  final String? providerServiceId;
+  final String? webSubId;
   final DateTime? startDate;
   final DateTime? endDate;
   final String? status;
@@ -22,8 +22,8 @@ class UserSubscribeModel {
   factory UserSubscribeModel.fromJson(Map<String, dynamic> json) {
     return UserSubscribeModel(
       id: json['id'] as int?,
-      providerServiceId: json['provider__service_id'] as int?,
-      webSubId: json['web_sub_id'] as int?,
+      providerServiceId: json['provider__service_id'],
+      webSubId: json['web_sub_id'] ,
       startDate: json['start_date'] != null
           ? DateTime.tryParse(json['start_date'])
           : null,

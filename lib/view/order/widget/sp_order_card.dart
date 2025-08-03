@@ -184,6 +184,25 @@ class OrderCard2 extends StatelessWidget {
                           ],
                         ),
                       ),
+                      SizedBox(height: 5,),
+                         RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: " الملاحظات: ",
+                              style: Styles.style4.copyWith(
+                                color: AppColors.black,
+                              ),
+                            ),
+                            TextSpan(
+                              text:"",
+                              style: Styles.style4.copyWith(
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   // but

@@ -5,7 +5,9 @@ import '../../../../core/constant/app_colors.dart';
 import '../../../../core/constant/styles.dart';
 
 class CubonRow extends StatelessWidget {
-  const CubonRow({super.key});
+  final String discount;
+  final String date;
+  const CubonRow({super.key, required this.discount, required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +23,13 @@ class CubonRow extends StatelessWidget {
           RichText(
               text: TextSpan(children: [
             TextSpan(
-                text: ' وفر ',
+                text: ' يوجد خصم  ',
                 style: Styles.style4.copyWith(color: AppColors.charcoalGrey)),
             TextSpan(
-                text: '100',
+                text: '$discount %',
                 style: Styles.style4.copyWith(color: AppColors.primaryColor)),
             TextSpan(
-                text: '  مع استخدام كود nour123',
+                text: ' صالح حتى $date',
                 style: Styles.style4.copyWith(color: AppColors.charcoalGrey))
           ])),
           Icon(Icons.percent, size: 20.sp, color: AppColors.primaryColor),

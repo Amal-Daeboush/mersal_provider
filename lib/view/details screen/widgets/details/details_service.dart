@@ -13,11 +13,30 @@ class DetailsService extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     String formatSmartDate(DateTime dateTime) {
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final aDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+      final difference = today.difference(aDate).inDays;
+
+      if (difference == 0) {
+        return 'اليوم ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+      } else if (difference == 1) {
+        return 'أمس ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+      } else {
+        return '${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+      }
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           productModel.name,
+          style: Styles.style6.copyWith(color: AppColors.primaryColorBold),
+        ),
+        const SizedBox(height: 10),
+           Text(
+          productModel.description,
           style: Styles.style6.copyWith(color: AppColors.primaryColorBold),
         ),
         const SizedBox(height: 10),
@@ -41,7 +60,11 @@ class DetailsService extends StatelessWidget {
         ),
         SizedBox(height: 16.h),
         // cuban
-        const CubonRow(),
+         productModel.discountInfo.hasDiscount
+            ? CubonRow(
+              discount: productModel.discountInfo.discountValue!,
+              date: formatSmartDate(productModel.discountInfo.discountEndDate!),
+            ):SizedBox(),
         const SizedBox(height: 16),
         const Divider(thickness: 1),
       ],

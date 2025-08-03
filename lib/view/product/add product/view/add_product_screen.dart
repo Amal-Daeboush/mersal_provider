@@ -62,12 +62,13 @@ class AddProductScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  CircleAvatar(
-                                    radius: 20.r,
-                                    backgroundImage: const AssetImage(
-                                      AppImageAsset.profile,
-                                    ),
-                                  ),
+                                    CircleAvatar(
+            radius: 20.r,
+            backgroundImage:
+                ConstData.image.isEmpty
+                    ? const AssetImage(AppImageAsset.user)
+                    : NetworkImage(ConstData.image) as ImageProvider,
+          ),
                                   ArrowBackIcon(
                                     isHomeScreen: false,
                                     onTap: () => Get.back(),

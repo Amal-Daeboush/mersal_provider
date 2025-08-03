@@ -45,9 +45,9 @@ class CardOpinion extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            leading: const CircleAvatar(
+            leading:  CircleAvatar(
               radius: 15,
-              backgroundImage: AssetImage(AppImageAsset.profile),
+              backgroundImage: NetworkImage(ratingModel.user.image),
             ),
             title: Text(
               ratingModel.user.name,

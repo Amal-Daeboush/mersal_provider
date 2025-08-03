@@ -78,7 +78,12 @@ class HomeServiceScreen extends StatelessWidget {
                     isSrervice: true,
                     add: () => Get.to(const AddServiceScreen()),
                   ),
-                  SizedBox(height: 15.h),
+                  SizedBox(height: 15.h),     controller.statusRequest == StatusRequest.failure? Center(
+                        child: Text(controller.message,
+                          
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ):
                   controller.statusRequest == StatusRequest.loading
                       ? SizedBox(
                         height: 150.h,

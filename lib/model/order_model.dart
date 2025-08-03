@@ -11,7 +11,7 @@ OrderModel orderModelFromJson(String str) => OrderModel.fromJson(json.decode(str
 String orderModelToJson(OrderModel data) => json.encode(data.toJson());
 
 class OrderModel {
-    final int orderId;
+    final String orderId;
     final OrderDetails orderDetails;
     final List<Product> products;
     OtherUserInfo? userInfo;
@@ -40,7 +40,7 @@ class OrderModel {
 
 class OrderDetails {
     final int id;
-    final int userId;
+    final String userId;
     final String status;
       final String delivery_fee;
     final DateTime createdAt;
@@ -71,7 +71,7 @@ class OrderDetails {
 
 class Product {
     final int orderProductId;
-    final int productId;
+    final String productId;
     final String productName;
     final String totalPrice;
     final String quantity;

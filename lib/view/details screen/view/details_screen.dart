@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:provider_mersal/core/class/status_request.dart';
-import 'package:provider_mersal/core/constant/styles.dart';
+
 import 'package:provider_mersal/model/produt_model.dart';
 import 'package:provider_mersal/view/details%20screen/controller/details_controller.dart';
 import 'package:provider_mersal/view/widgets/custom_loading.dart';
@@ -28,7 +28,11 @@ class DetailsScreen extends StatelessWidget {
               builder: (context, constraints) {
                 return Stack(
                   children: [
-                    ServiceImage(screenWidth, screenHeight),
+                    ServiceImage(
+                      screenWidth,
+                      screenHeight,
+                      productModel.images.first.url,
+                    ),
                     // details
                     Positioned(
                       top: screenHeight / 3.5,
@@ -67,25 +71,22 @@ class DetailsScreen extends StatelessWidget {
                                         )
                                         : controller.statusRequest ==
                                             StatusRequest.failure
-                                        ? Center(
-                                          child: Text(
-                                            controller.message,
-                                            style: Styles.style3.copyWith(
-                                              color: Colors.red,
-                                            ),
-                                          ),
+                                        ? CustomTabBar(
+                                          images: productModel.images,
+                                          message: controller.message,
+                                          ratings: controller.ratings,
+                                          height: constraints.maxHeight / 2.5,
                                         )
                                         : controller.statusRequest ==
                                             StatusRequest.offlineFailure
-                                        ? Center(
-                                          child: Text(
-                                            controller.message,
-                                            style: Styles.style3.copyWith(
-                                              color: Colors.red,
-                                            ),
-                                          ),
+                                        ? CustomTabBar(
+                                          images: productModel.images,
+                                          message: controller.message,
+                                          ratings: controller.ratings,
+                                          height: constraints.maxHeight / 2.5,
                                         )
                                         : CustomTabBar(
+                                          images: productModel.images,
                                           ratings: controller.ratings,
                                           height: constraints.maxHeight / 2.5,
                                         ),

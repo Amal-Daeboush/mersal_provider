@@ -27,10 +27,11 @@ class AppImageAsset {
   static const String off_Image = "$rootImages/offpng.png";
   static const String discount1 = "$rootImages/discounts.png";
   static const String cap = "$rootImages/cape.png";
-  static const String profile = "$rootImages/profile.jpg";
+  static const String profile1 = "$rootImages/profile.jpg";
   static const String notif_image = "$rootImages/notif_image.png";
   static const String im1 = "$rootImages/im1.jpg";
   static const String im2 = "$rootImages/im2.jpg";
   static const String im3 = "$rootImages/im3.jpg";
    static const String sun = "$rootImages/sun.png";
+      static const String user = "$rootImages/user.png";
 }

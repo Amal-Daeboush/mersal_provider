@@ -6,6 +6,7 @@ import 'package:provider_mersal/core/sevices/sevices.dart';
 import 'package:provider_mersal/model/api%20remote/api_remote.dart';
 import 'package:provider_mersal/view/address/screen/address.dart';
 import 'package:provider_mersal/view/authentication/login/screen/login.dart';
+import 'package:provider_mersal/view/status%20screen/controller/status_controller.dart';
 
 
 class VerificationController extends GetxController {
@@ -47,7 +48,7 @@ class VerificationController extends GetxController {
       statusRequest = StatusRequest.success;
       await MyServices.saveValue(SharedPreferencesKey.otp, '1');
       await MyServices().setConstOtp();
-      Get.off(AddressScreen(isfromHome: false));
+      Get.put(StatusController());
       //   Get.off(LoginScreen(provider: provider));
     } else if (response is String) {
       // ✅ عرض رسالة الخطأ بشكل مناسب

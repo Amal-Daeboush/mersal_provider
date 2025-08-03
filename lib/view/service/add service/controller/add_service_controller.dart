@@ -184,7 +184,14 @@ class AddServiceController extends GetxController {
 
       var response = await request.send();
       var responseData = await response.stream.bytesToString();
-
+      var decodeResponse = json.decode(responseData);
+if (response.statusCode == 403 &&
+    decodeResponse['message'] == 'Provider does not have an active subscription') {
+  Get.snackbar('تنبيه', 'قم بالاشتراك أولاً قبل إضافة الخدمة');
+  statusRequest = StatusRequest.failure;
+  update();
+  return;
+}
       if (response.statusCode == 200 || response.statusCode == 201) {
         var decodeResponse = json.decode(responseData);
         if (isDescount) {

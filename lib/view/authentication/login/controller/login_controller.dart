@@ -12,6 +12,7 @@ import 'package:provider_mersal/model/user_model.dart';
 import 'package:provider_mersal/view/address/screen/address.dart';
 import 'package:provider_mersal/view/authentication/verfication/view/verfication_phon_screen.dart';
 import 'package:provider_mersal/view/botttom%20nav%20bar/view/bottom_nav_bar_screen.dart';
+import 'package:provider_mersal/view/status%20screen/controller/status_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginController extends GetxController {
@@ -61,8 +62,9 @@ class LoginController extends GetxController {
             );
 
         await MyServices().setConstProductVendor();
+         
         ConstData.user!.user.otp == '1'
-            ? Get.off(AddressScreen(isfromHome: false))
+            ?    Get.put(StatusController())
             : Get.off(VerificationPhonScreen(
               email: emailController.text,
               isForgetpass: false,

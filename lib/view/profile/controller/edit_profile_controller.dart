@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,11 +22,13 @@ class EditInfoProfileController extends GetxController {
   final ImagePicker picker = ImagePicker();
   StatusRequest statusRequest = StatusRequest.none;
   TextEditingController name = TextEditingController();
+   TextEditingController phone = TextEditingController();
   TextEditingController national_id = TextEditingController();
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   Crud crud = Crud();
   onInit() {
     name.text = ConstData.nameUser;
+    phone.text=ConstData.phone;
     national_id.text = ConstData.national;
     super.onInit();
   }
@@ -70,7 +73,40 @@ class EditInfoProfileController extends GetxController {
       print("🔴 Status Code: ${response.statusCode}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        //  var decodeResponse = json.decode(responseData);
+        var decoded = json.decode(responseData); // ✅ هنا تفك الـ JSON
+
+        if (decoded is Map<String, dynamic>) {
+          if (decoded.containsKey('data')) {
+            var image = decoded['data']['image'];
+
+            await MyServices.saveValue(SharedPreferencesKey.image, image);
+            ConstData.image = image;
+
+            Get.find<ProfileController>().image = image;
+            Get.find<ProfileController>().update();
+            MyServices().setConstName();
+
+            //   Get.snackbar('نجاح', 'تم تحديث معلوماتك');
+            Get.offAll(
+              BottomNavBarScreen(
+                prov:
+                    ConstData.producter
+                        ? 'product_provider'
+                        : 'service_provider',
+              ),
+            );
+          } else if (decoded.containsKey('message')) {
+            Get.snackbar('رسالة', decoded['message']);
+          } else if (decoded.containsKey('errors')) {
+            var errors = decoded['errors'] as Map<String, dynamic>;
+            String errorMessages = errors.values
+                .map((list) => (list as List).join('\n'))
+                .join('\n');
+            Get.snackbar('خطأ', errorMessages);
+          } else {
+            Get.snackbar('خطأ', 'استجابة غير مفهومة من السيرفر');
+          }
+        }
 
         statusRequest = StatusRequest.success;
         CustomSnackBar('الصورة تم رفعها بنجاح!', true);
@@ -97,6 +133,7 @@ class EditInfoProfileController extends GetxController {
 
       var response = await ApiRemote().UpdateInfoProductModel({
         '_method': 'POST',
+        'phone':phone.text,
         'name': name.text,
         'national_id': national_id.text,
       });
@@ -115,20 +152,26 @@ class EditInfoProfileController extends GetxController {
         if (response.containsKey('data')) {
           var name = response['data']['name'];
           var national_id = response['data']['national_id'];
+          var phone = response['data']['phone'];
           await MyServices.saveValue(SharedPreferencesKey.userName, name);
           await MyServices.saveValue(
             SharedPreferencesKey.national,
             national_id,
+          );
+           await MyServices.saveValue(
+            SharedPreferencesKey.phone,
+            phone,
           );
           ConstData.nameUser = name;
           ConstData.national = national_id;
           Get.find<ProfileController>().name = name;
           Get.find<ProfileController>().update();
           MyServices().setConstName();
+              MyServices().setConstPhone();
           MyServices().setConstNotationId();
 
           Get.snackbar('نجاح', 'تم تحديث معلوماتك');
-          Get.off(
+          Get.offAll(
             BottomNavBarScreen(
               prov:
                   ConstData.producter ? 'product_provider' : 'service_provider',

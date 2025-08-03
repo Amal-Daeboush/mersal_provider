@@ -14,6 +14,7 @@ import '../../../model/order_model.dart';
 
 class OrderController extends GetxController {
   List<OrderModel> acceptOrders = [];
+   List<OrderModel> compete = [];
   List<OrderModel> onWayOrders = [];
   List<OrderModel> cancelOrders = [];
   List<OrderModel> waitOrders = [];
@@ -105,7 +106,7 @@ class OrderController extends GetxController {
                       .toList();
               for (var order in orders) {
                 final userId = order.orderDetails.userId;
-                final otherUser = await fetchOtherUser(userId);
+                final otherUser = await fetchOtherUser(userId.toString());
 
                 if (otherUser != null) {
                   order.userInfo = otherUser;
@@ -124,11 +125,15 @@ class OrderController extends GetxController {
 
               acceptOrders =
                   orders
-                      .where((item) => item.orderDetails.status == 'complete')
+                      .where((item) => item.orderDetails.status == 'accepted')
                       .toList();
               onWayOrders =
                   orders
                       .where((item) => item.orderDetails.status == 'on_way')
+                      .toList();
+                        compete =
+                  orders
+                      .where((item) => item.orderDetails.status == 'complete')
                       .toList();
 
               statusRequest = StatusRequest.success;
@@ -201,7 +206,7 @@ class OrderController extends GetxController {
     );
   }
 
-  Future<OtherUserInfo?> fetchOtherUser(int userId) async {
+  Future<OtherUserInfo?> fetchOtherUser(String userId) async {
     final url = '${ApiLinks.getUser}/$userId';
 
     try {

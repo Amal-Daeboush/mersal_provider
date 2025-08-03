@@ -8,8 +8,8 @@ import '../../../core/constant/styles.dart';
 
 class AppBarProfile extends StatelessWidget {
   final String name;
-
-  const AppBarProfile({super.key, required this.name});
+  final String image;
+  const AppBarProfile({super.key, required this.name, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,10 @@ class AppBarProfile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 20.r,
-            backgroundImage: AssetImage(AppImageAsset.profile),
+            backgroundImage:
+                ConstData.image.isEmpty
+                    ? const AssetImage(AppImageAsset.user)
+                    : NetworkImage(ConstData.image) as ImageProvider,
           ),
           title: Text(
             ConstData.nameUser,
